@@ -28,6 +28,10 @@ func main() {
 		log.Fatalf("Failed to create 'clients' table: %v", err)
 	}
 
+	// Add a route for creating a client
+	http.HandleFunc("/health", getStatusHandler)
+	http.HandleFunc("/add-clients", createClientHandler)
+
  	// Start the API server	
 	port := "8080" // Change to your desired port
 	log.Printf("Server started on :%s", port)
