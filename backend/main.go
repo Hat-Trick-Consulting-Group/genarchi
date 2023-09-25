@@ -9,17 +9,18 @@ import (
 )
 
 const (
-	host     = "172.17.0.2"
+	host     = "localhost"
 	port     = 5432
-	user     = "postgres"
-	password = "password"
-	dbname   = "postgres"
+	user     = "admin"
+	password = "admin"
+	dbname   = "crm"
 )
 
 func main() {
 	// Initialize the database connection
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
+	log.Printf("psqlInfo: %s", psqlInfo)
 	InitDB(psqlInfo)
 
 
