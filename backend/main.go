@@ -21,8 +21,12 @@ func main() {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
 	log.Printf("psqlInfo: %s", psqlInfo)
-	InitDB(psqlInfo)
+	db := InitDB(psqlInfo)
 
+	// Create the "clients" table if it doesn't exist
+	if err := createClientsTable(db); err != nil {
+		log.Fatalf("Failed to create 'clients' table: %v", err)
+	}
 
  	// Start the API server	
 	port := "8080" // Change to your desired port
