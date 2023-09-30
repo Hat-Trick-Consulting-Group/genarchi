@@ -1,15 +1,17 @@
 # Start
 
-For developpement purpose
-Database :
+## For developpement purpose
 
 ```
 docker compose up --build
 cd backend
 go run main.go
+cd ../frontend
+npm run dev
 ```
 
-For deployment
+## For deployment
+
 Backend :
 
 ```
