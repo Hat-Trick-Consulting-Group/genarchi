@@ -1,11 +1,15 @@
 # Start
 
+For developpement purpose
 Database :
 
 ```
 docker compose up --build
+cd backend
+go run main.go
 ```
 
+For deployment
 Backend :
 
 ```
@@ -13,6 +17,15 @@ cd backend
 go build .
 ./main
 ```
+
+Frontend :
+
+```
+cd frontend
+npm run build
+```
+
+After use /dist and expose it
 
 # Routes
 
