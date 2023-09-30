@@ -1,5 +1,6 @@
 import { h } from "preact";
-import { useEffect } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
+import { ClientUpdate } from "./ClientUpdate";
 
 interface Client {
   id: number;
@@ -15,6 +16,14 @@ interface ClientTableProps {
 }
 
 export function ClientTable({ clients, onRefresh, onUpdate, onDelete }: ClientTableProps) {
+  const [isUpdateVisible, setIsUpdateVisible] = useState(false);
+  const [selectedClient, setSelectedClient] = useState(null);
+
+  const handleUpdateClick = (client) => {
+    setSelectedClient(client);
+    setIsUpdateVisible(true);
+  };
+
   return (
     <div>
       <h2>Clients</h2>
@@ -35,13 +44,25 @@ export function ClientTable({ clients, onRefresh, onUpdate, onDelete }: ClientTa
               <td>{client.name}</td>
               <td>{client.email}</td>
               <td>
-                <button onClick={() => onUpdate(client)}>Update</button>
+                <button onClick={() => handleUpdateClick(client)}>Update</button>
                 <button onClick={() => onDelete(client)}>Delete</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      {isUpdateVisible && (
+        <div>
+          <h3>Update Client</h3>
+          <ClientUpdate
+            client={selectedClient}
+            onUpdate={(updatedClient) => {
+              onUpdate(updatedClient);
+              setIsUpdateVisible(false);
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 }

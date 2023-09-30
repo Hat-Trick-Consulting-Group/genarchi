@@ -45,8 +45,25 @@ export function App() {
   };
 
   const handleUpdateClient = (updatedClient) => {
-    // Implement logic to update the client on the server
-    console.log("Update client:", updatedClient);
+    fetch(API_URL + "update-client", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedClient),
+    })
+      .then((response) => {
+        if (response.ok) {
+          // If the request is successful, refresh the client list
+          fetchClients();
+          console.log("Client updated successfully");
+        } else {
+          console.error("Failed to update client");
+        }
+      })
+      .catch((error) => {
+        console.error("Error updating client:", error);
+      });
   };
 
   const handleDeleteClient = (clientToDelete) => {
