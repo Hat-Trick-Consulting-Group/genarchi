@@ -50,8 +50,25 @@ export function App() {
   };
 
   const handleDeleteClient = (clientToDelete) => {
-    // Implement logic to delete the client on the server
-    console.log("Delete client:", clientToDelete);
+    fetch(API_URL + "delete-client", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(clientToDelete),
+    })
+      .then((response) => {
+        if (response.ok) {
+          // If the request is successful, refresh the client list
+          fetchClients();
+          console.log("Client deleted successfully");
+        } else {
+          console.error("Failed to delete client");
+        }
+      })
+      .catch((error) => {
+        console.error("Error deleting client:", error);
+      });
   };
 
   return (
