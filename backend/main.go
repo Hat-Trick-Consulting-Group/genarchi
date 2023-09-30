@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 
+	"main/psql"
 	"main/routes"
 )
 
@@ -28,10 +29,10 @@ func main() {
 		psql_host, psql_port, psql_user, psql_password, psql_dbname)
 	fmt.Printf("psqlInfo: %s\n", psqlInfo)
 
-	db := routes.InitDB(psqlInfo)
+	db := psql.InitDB(psqlInfo)
 
 	// Create the "clients" table if it doesn't exist
-	if err := routes.CreateClientsTable(db); err != nil {
+	if err := psql.CreateClientsTable(db); err != nil {
 		log.Fatalf("Failed to create 'clients' table: %v", err)
 	}
 
