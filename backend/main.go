@@ -3,12 +3,12 @@ package main
 import (
 	"fmt"
 	"log"
-	"net/http"
 
+	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 )
 
-// postgreSQL represents the database connection information
+// PostgreSQL represents the database connection information
 const (
 	psql_host     = "localhost"
 	psql_port     = 5432
@@ -18,24 +18,27 @@ const (
 )
 
 func main() {
+	// Initialize the Gin router
+	router := gin.Default()
+
 	// Initialize the database connection
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
-	psql_host, psql_port, psql_user, psql_password, psql_dbname)
-	fmt.Printf("psqlInfo: %s", psqlInfo)
+		psql_host, psql_port, psql_user, psql_password, psql_dbname)
+	fmt.Printf("psqlInfo: %s\n", psqlInfo)
 
 	db := InitDB(psqlInfo)
-
+	
 	// Create the "clients" table if it doesn't exist
 	if err := createClientsTable(db); err != nil {
 		log.Fatalf("Failed to create 'clients' table: %v", err)
 	}
 
-	// Add routes to handler API requests
-	http.HandleFunc("/health", getStatusHandler)
-	http.HandleFunc("/add-clients", createClientHandler)
+	// Add routes to handle API requests
+	router.GET("/health", getStatusHandler)
+	router.POST("/add-clients", createClientHandler)
 
- 	// Start the API server	
+	// Start the API server
 	port := "8080"
-	log.Printf("Server started on :%s", port)
-	log.Fatal(http.ListenAndServe(": "+port, nil))
+	log.Printf("Server started on :%s\n", port)
+	log.Fatal(router.Run(":" + port))
 }
