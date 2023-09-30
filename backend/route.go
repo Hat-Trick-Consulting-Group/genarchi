@@ -56,14 +56,21 @@ func CreateClientHandler(c *gin.Context) {
 		return
 	}
 
-	_, err := db.Exec("INSERT INTO clients (name, email) VALUES ($1, $2)", newClient.Name, newClient.Email)
+	// Use a prepared statement to insert data safely
+	safeQuery, err := db.Prepare("INSERT INTO clients (name, email) VALUES ($1, $2)")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to prepare SQL statement"})
+		return
+	}
+	defer safeQuery.Close()
+
+	_, err = safeQuery.Exec(newClient.Name, newClient.Email)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to insert client into the database"})
 		return
 	}
 
-	// Respond with a success message
-	c.JSON(http.StatusCreated, gin.H{"message": fmt.Sprintf("Client created successfully: ID=%d, Name=%s, Email=%s", body.ID, body.Name, body.Email)})
+	c.JSON(http.StatusCreated, gin.H{"message": fmt.Sprintf("Client created successfully: Name=%s, Email=%s", newClient.Name, newClient.Email)})
 }
 
 func GetStatusHandler(c *gin.Context) {
