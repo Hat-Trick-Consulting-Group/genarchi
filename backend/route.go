@@ -55,7 +55,7 @@ func CreateClientHandler(c *gin.Context, db *sql.DB) {
 	}
 
 	// Use a prepared statement to insert data safely
-	safeQuery, err := db.Prepare("INSERT INTO clients (name, email) VALUES ($1, $2)")
+	safeQuery, err := db.Prepare("INSERT INTO clients (name, email) VALUES ($1, $2);")
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to prepare SQL statement"})
 		return
@@ -72,6 +72,28 @@ func CreateClientHandler(c *gin.Context, db *sql.DB) {
 }
 
 
+func GetClientsHandler(c *gin.Context, db *sql.DB) {
+	var clients []client
+
+	rows, err := db.Query("SELECT * FROM clients;")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to query the database"})
+		return
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var currentClient client
+		if err := rows.Scan(&currentClient.ID, &currentClient.Name, &currentClient.Email); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to scan the row"})
+			return
+		}
+		clients = append(clients, currentClient)
+	}
+
+	c.JSON(http.StatusOK, gin.H{"clients": clients})
+}
 
 func GetStatusHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "API up"})

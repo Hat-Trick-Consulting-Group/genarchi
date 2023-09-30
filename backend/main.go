@@ -35,9 +35,12 @@ func main() {
 
 	// Add routes to handle API requests
 	router.GET("/health", GetStatusHandler)
-	router.POST("/add-clients", func(c *gin.Context) {
+	router.POST("/add-client", func(c *gin.Context) {
         CreateClientHandler(c, db)
     })
+	router.GET("/get-clients", func(c *gin.Context) {
+		GetClientsHandler(c, db)
+	})
 
 
 	// Start the API server
