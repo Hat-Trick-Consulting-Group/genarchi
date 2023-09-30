@@ -6,6 +6,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
+
+	"main/routes"
 )
 
 // PostgreSQL represents the database connection information
@@ -26,26 +28,26 @@ func main() {
 		psql_host, psql_port, psql_user, psql_password, psql_dbname)
 	fmt.Printf("psqlInfo: %s\n", psqlInfo)
 
-	db := InitDB(psqlInfo)
+	db := routes.InitDB(psqlInfo)
 
 	// Create the "clients" table if it doesn't exist
-	if err := CreateClientsTable(db); err != nil {
+	if err := routes.CreateClientsTable(db); err != nil {
 		log.Fatalf("Failed to create 'clients' table: %v", err)
 	}
 
 	// Add routes to handle API requests
-	router.GET("/health", GetStatusHandler)
+	router.GET("/health", routes.GetStatusHandler)
 	router.POST("/add-client", func(c *gin.Context) {
-        CreateClientHandler(c, db)
+        routes.CreateClientHandler(c, db)
     })
 	router.GET("/get-clients", func(c *gin.Context) {
-		GetClientsHandler(c, db)
+		routes.GetClientsHandler(c, db)
 	})
 	router.PUT("/update-client", func(c *gin.Context) {
-		UpdateClientHandler(c, db)
+		routes.UpdateClientHandler(c, db)
 	})
 	router.DELETE("/delete-client", func(c *gin.Context) {
-		DeleteClientHandler(c, db)
+		routes.DeleteClientHandler(c, db)
 	})
 
 

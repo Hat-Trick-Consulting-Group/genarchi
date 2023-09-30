@@ -1,4 +1,4 @@
-package main
+package routes
 
 import (
 	"database/sql"
@@ -8,6 +8,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
+
+	"main/models"
 )
 
 func InitDB(dataSourceName string) *sql.DB {
@@ -52,7 +54,7 @@ func GetStatusHandler(c *gin.Context) {
 }
 
 func CreateClientHandler(c *gin.Context, db *sql.DB) {
-	var newClient client
+	var newClient models.Client
 
 	if err := c.BindJSON(&newClient); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to parse request body"})
@@ -78,7 +80,7 @@ func CreateClientHandler(c *gin.Context, db *sql.DB) {
 
 
 func GetClientsHandler(c *gin.Context, db *sql.DB) {
-	var clients []client
+	var clients []models.Client
 
 	rows, err := db.Query("SELECT * FROM clients;")
 	if err != nil {
@@ -89,7 +91,7 @@ func GetClientsHandler(c *gin.Context, db *sql.DB) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var currentClient client
+		var currentClient models.Client
 		if err := rows.Scan(&currentClient.ID, &currentClient.Name, &currentClient.Email); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to scan the row"})
 			return
@@ -101,7 +103,7 @@ func GetClientsHandler(c *gin.Context, db *sql.DB) {
 }
 
 func UpdateClientHandler(c *gin.Context, db *sql.DB) {
-	var clientToUpdate client
+	var clientToUpdate models.Client
 
 	if err := c.BindJSON(&clientToUpdate); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to parse request body"})
@@ -131,7 +133,7 @@ func UpdateClientHandler(c *gin.Context, db *sql.DB) {
 
 
 func DeleteClientHandler(c *gin.Context, db *sql.DB) {
-	var clientToDelete client
+	var clientToDelete models.Client
 
 	if err := c.BindJSON(&clientToDelete); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to parse request body"})
