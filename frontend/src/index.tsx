@@ -2,7 +2,7 @@ import { h, render } from "preact";
 import { ClientTable } from "./ClientTable";
 import { ClientAddition } from "./ClientAddition";
 import { useState, useEffect } from "preact/hooks";
-import { getClients, addClient, updateClient, deleteClient } from "./clientServices"; // Import the service functions
+import { getClients, addClient, updateClient, deleteClient } from "./ClientServices"; // Import the service functions
 
 export function App() {
   const [clients, setClients] = useState([]);
