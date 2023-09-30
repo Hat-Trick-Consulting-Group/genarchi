@@ -8,19 +8,21 @@ import (
 	_ "github.com/lib/pq"
 )
 
+// postgreSQL represents the database connection information
 const (
-	host     = "localhost"
-	port     = 5432
-	user     = "admin"
-	password = "admin"
-	dbname   = "crm"
+	psql_host     = "localhost"
+	psql_port     = 5432
+	psql_user     = "admin"
+	psql_password = "admin"
+	psql_dbname   = "crm"
 )
 
 func main() {
 	// Initialize the database connection
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
-	log.Printf("psqlInfo: %s", psqlInfo)
+	psql_host, psql_port, psql_user, psql_password, psql_dbname)
+	fmt.Printf("psqlInfo: %s", psqlInfo)
+
 	db := InitDB(psqlInfo)
 
 	// Create the "clients" table if it doesn't exist
@@ -28,12 +30,12 @@ func main() {
 		log.Fatalf("Failed to create 'clients' table: %v", err)
 	}
 
-	// Add a route for creating a client
+	// Add routes to handler API requests
 	http.HandleFunc("/health", getStatusHandler)
 	http.HandleFunc("/add-clients", createClientHandler)
 
  	// Start the API server	
-	port := "8080" // Change to your desired port
+	port := "8080"
 	log.Printf("Server started on :%s", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	log.Fatal(http.ListenAndServe(": "+port, nil))
 }
