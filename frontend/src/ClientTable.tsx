@@ -9,14 +9,16 @@ interface Client {
 
 interface ClientTableProps {
   clients: Client[];
+  onRefresh: () => void;
   onUpdate: (client: Client) => void;
   onDelete: (client: Client) => void;
 }
 
-export function ClientTable({ clients, onUpdate, onDelete }: ClientTableProps) {
+export function ClientTable({ clients, onRefresh, onUpdate, onDelete }: ClientTableProps) {
   return (
     <div>
       <h2>Clients</h2>
+      <button onClick={() => onRefresh()}>Refresh</button>
       <table>
         <thead>
           <tr>

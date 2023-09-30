@@ -58,7 +58,7 @@ export function App() {
     <div>
       <h1>Hat Trick</h1>
       <ClientAddition onSubmit={handleAddClient} />
-      <ClientTable clients={clients} onUpdate={handleUpdateClient} onDelete={handleDeleteClient} />
+      <ClientTable clients={clients} onRefresh={fetchClients} onUpdate={handleUpdateClient} onDelete={handleDeleteClient} />
     </div>
   );
 }
