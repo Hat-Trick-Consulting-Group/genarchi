@@ -26,7 +26,7 @@ func InitDB(dataSourceName string) *sql.DB {
 	return db
 }
 
-func createClientsTable(db *sql.DB) error {
+func CreateClientsTable(db *sql.DB) error {
 	// SQL statement to create the table if it doesn't exist
 	createTableSQL := `
 		CREATE TABLE IF NOT EXISTS clients (
@@ -48,16 +48,15 @@ func createClientsTable(db *sql.DB) error {
 	return nil
 }
 
-func createClientHandler(c *gin.Context) {
-	var body client // Create an instance of the client struct
+func CreateClientHandler(c *gin.Context) {
+	var newClient client
 
-	if err := c.BindJSON(&body); err != nil {
+	if err := c.BindJSON(&newClient); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to parse request body"})
 		return
 	}
 
-	// You should use prepared statements to prevent SQL injection
-	_, err := db.Exec("INSERT INTO clients (name, email) VALUES ($1, $2)", body.Name, body.Email)
+	_, err := db.Exec("INSERT INTO clients (name, email) VALUES ($1, $2)", newClient.Name, newClient.Email)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to insert client into the database"})
 		return
@@ -67,6 +66,6 @@ func createClientHandler(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"message": fmt.Sprintf("Client created successfully: ID=%d, Name=%s, Email=%s", body.ID, body.Name, body.Email)})
 }
 
-func getStatusHandler(c *gin.Context) {
+func GetStatusHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "API up"})
 }

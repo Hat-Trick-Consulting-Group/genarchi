@@ -27,7 +27,7 @@ func main() {
 	fmt.Printf("psqlInfo: %s\n", psqlInfo)
 
 	db := InitDB(psqlInfo)
-	
+
 	// Create the "clients" table if it doesn't exist
 	if err := createClientsTable(db); err != nil {
 		log.Fatalf("Failed to create 'clients' table: %v", err)
