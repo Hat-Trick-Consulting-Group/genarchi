@@ -41,6 +41,12 @@ func main() {
 	router.GET("/get-clients", func(c *gin.Context) {
 		GetClientsHandler(c, db)
 	})
+	router.PUT("/update-client", func(c *gin.Context) {
+		UpdateClientHandler(c, db)
+	})
+	router.DELETE("/delete-client", func(c *gin.Context) {
+		DeleteClientHandler(c, db)
+	})
 
 
 	// Start the API server
