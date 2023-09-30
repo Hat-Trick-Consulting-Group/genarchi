@@ -10,8 +10,6 @@ import (
 	_ "github.com/lib/pq"
 )
 
-var db *sql.DB
-
 func InitDB(dataSourceName string) *sql.DB {
 	db, err := sql.Open("postgres", dataSourceName)
 	if err != nil {
@@ -48,7 +46,7 @@ func CreateClientsTable(db *sql.DB) error {
 	return nil
 }
 
-func CreateClientHandler(c *gin.Context) {
+func CreateClientHandler(c *gin.Context, db *sql.DB) {
 	var newClient client
 
 	if err := c.BindJSON(&newClient); err != nil {
@@ -72,6 +70,8 @@ func CreateClientHandler(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, gin.H{"message": fmt.Sprintf("Client created successfully: Name=%s, Email=%s", newClient.Name, newClient.Email)})
 }
+
+
 
 func GetStatusHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "API up"})

@@ -29,13 +29,16 @@ func main() {
 	db := InitDB(psqlInfo)
 
 	// Create the "clients" table if it doesn't exist
-	if err := createClientsTable(db); err != nil {
+	if err := CreateClientsTable(db); err != nil {
 		log.Fatalf("Failed to create 'clients' table: %v", err)
 	}
 
 	// Add routes to handle API requests
-	router.GET("/health", getStatusHandler)
-	router.POST("/add-clients", createClientHandler)
+	router.GET("/health", GetStatusHandler)
+	router.POST("/add-clients", func(c *gin.Context) {
+        CreateClientHandler(c, db)
+    })
+
 
 	// Start the API server
 	port := "8080"
