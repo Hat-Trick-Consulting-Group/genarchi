@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { useEffect, useState } from "preact/hooks";
+import { useEffect } from "preact/hooks";
 
 interface Client {
   id: number;
@@ -7,19 +7,13 @@ interface Client {
   email: string;
 }
 
-export function ClientTable() {
-  const API_URL = "http://localhost:8080/";
+interface ClientTableProps {
+  clients: Client[];
+  onUpdate: (client: Client) => void;
+  onDelete: (client: Client) => void;
+}
 
-  const [clients, setClients] = useState<Client[]>([]);
-
-  useEffect(() => {
-    // Fetch data from your backend route
-    fetch(API_URL + "get-clients")
-      .then((response) => response.json())
-      .then((data) => setClients(data.clients))
-      .catch((error) => console.error("Error fetching data:", error));
-  }, []);
-
+export function ClientTable({ clients, onUpdate, onDelete }: ClientTableProps) {
   return (
     <div>
       <h2>Clients</h2>
@@ -29,6 +23,7 @@ export function ClientTable() {
             <th>ID</th>
             <th>Name</th>
             <th>Email</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -37,6 +32,10 @@ export function ClientTable() {
               <td>{client.id}</td>
               <td>{client.name}</td>
               <td>{client.email}</td>
+              <td>
+                <button onClick={() => onUpdate(client)}>Update</button>
+                <button onClick={() => onDelete(client)}>Delete</button>
+              </td>
             </tr>
           ))}
         </tbody>
