@@ -2,7 +2,7 @@
 
 Provision 1 EC2 instance on AWS
 
-## PREREUISITES
+## PREREQUISITES
 Terraform CLI 1.2.0+ installed
 AWS CLI intalled
 AWS Accound and credentials
