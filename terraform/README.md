@@ -70,6 +70,6 @@ TODO
 
 ## Plateform 3
 
-Everything related to the plateform 2 deployment is in the P2 folder.
+Everything related to the plateform 3 deployment is in the P3 folder.
 
 TODO
