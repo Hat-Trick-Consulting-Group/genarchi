@@ -1,0 +1,5 @@
+./terraform/P2/providers/*
+./terraform/P3/providers/*
+*.lock.hcl
+*.tfstate
+*.tfstate.backup
