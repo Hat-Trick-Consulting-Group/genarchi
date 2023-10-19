@@ -26,6 +26,12 @@ curl -X POST https://26ywp15fia.execute-api.eu-west-3.amazonaws.com/prod/add-cli
 }'
 ```
 
+/get-clients
+
+```
+curl -X GET https://26ywp15fia.execute-api.eu-west-3.amazonaws.com/prod/get-clients
+```
+
 # Doc :
 
 For foreign key, we use crypto UUID to get a unique value for each item in the table (builtin js package)

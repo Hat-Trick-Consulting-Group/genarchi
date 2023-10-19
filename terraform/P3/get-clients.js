@@ -1,9 +1,8 @@
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
+import { DynamoDBClient, ScanCommand } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
 
 const client = new DynamoDBClient({});
-
-const dynamoDB = DynamoDBDocumentClient.from(client);
+const dynamoDB = DynamoDBDocument.from(client);
 const dynamoDBTableName = "clients";
 
 export const handler = async (event) => {
@@ -11,26 +10,30 @@ export const handler = async (event) => {
     TableName: dynamoDBTableName,
   };
 
-  return await dynamoDB.scan(params).then(
-    (items) => {
-      console.log(items);
-      return {
-        statusCode: 201,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: items,
-      };
-    },
-    (err) => {
-      console.log("ERROR in Getting Clients: ", err);
-      return {
-        statusCode: 404,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: "ERROR in Getting Clients: " + JSON.stringify(err),
-      };
-    }
-  );
+  try {
+    const command = new ScanCommand(params);
+    const result = await dynamoDB.send(command);
+    console.log(result);
+
+    return {
+      statusCode: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: result.Items,
+    };
+  } catch (err) {
+    console.error("ERROR in Getting Clients: ", err);
+
+    return {
+      statusCode: 500, // Change the status code to 500 for internal server error
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        error: "ERROR in Getting Clients",
+        message: err.message,
+      }),
+    };
+  }
 };
