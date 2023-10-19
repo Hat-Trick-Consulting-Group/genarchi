@@ -7,3 +7,20 @@
 - 3. Call the lamdba in API Gateway, test and deploy
      - 3.A Input passthrough
        `Input passthrough: When there are no templates defined (recommended)`
+
+# CURL examples :
+
+/health
+
+```
+ curl -X GET https://26ywp15fia.execute-api.eu-west-3.amazonaws.com/prod/health
+```
+
+/add-client
+
+```
+curl -X POST https://26ywp15fia.execute-api.eu-west-3.amazonaws.com/prod/add-client -H "Content-Type: application/json" -d '{
+  "name": "Joe",
+  "email": "joe@epita.fr"
+}'
+```
