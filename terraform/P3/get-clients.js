@@ -30,10 +30,10 @@ export const handler = async (event) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
+      body: {
         error: "ERROR in Getting Clients",
         message: err.message,
-      }),
+      },
     };
   }
 };
