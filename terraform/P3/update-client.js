@@ -8,8 +8,6 @@ const dynamoDBTableName = "clients";
 export const handler = async (event) => {
   const { id, name, email } = event;
 
-  console.log(id, name, email);
-
   const params = {
     TableName: dynamoDBTableName,
     Key: {
@@ -29,7 +27,6 @@ export const handler = async (event) => {
 
   try {
     const result = await dynamoDB.send(new UpdateItemCommand(params));
-    console.log("Updated item in DynamoDB:", result);
 
     return {
       statusCode: 200,
@@ -39,8 +36,6 @@ export const handler = async (event) => {
       body: result,
     };
   } catch (err) {
-    console.error("ERROR in Update Client: ", err);
-
     return {
       statusCode: 500,
       headers: {

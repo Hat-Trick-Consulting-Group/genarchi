@@ -13,7 +13,6 @@ export const handler = async (event) => {
   try {
     const command = new ScanCommand(params);
     const result = await dynamoDB.send(command);
-    console.log(result);
 
     return {
       statusCode: 200,
@@ -23,17 +22,15 @@ export const handler = async (event) => {
       body: result.Items,
     };
   } catch (err) {
-    console.error("ERROR in Getting Clients: ", err);
-
     return {
       statusCode: 500, // Change the status code to 500 for internal server error
       headers: {
         "Content-Type": "application/json",
       },
-      body: {
+      body: JSON.stringify({
         error: "ERROR in Getting Clients",
         message: err.message,
-      },
+      }),
     };
   }
 };

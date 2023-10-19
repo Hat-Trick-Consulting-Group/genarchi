@@ -19,7 +19,6 @@ export const handler = async (event) => {
 
   return await dynamoDB.send(new PutCommand(params)).then(
     () => {
-      console.log("Added item to DynamoDB");
       return {
         statusCode: 201,
         headers: {
@@ -29,13 +28,12 @@ export const handler = async (event) => {
       };
     },
     (err) => {
-      console.log("ERROR in Save Client: ", err);
       return {
         statusCode: 404,
         headers: {
           "Content-Type": "application/json",
         },
-        body: "ERROR in Save Client: " + JSON.stringify(err),
+        body: "ERROR in Save Product: " + JSON.stringify(err),
       };
     }
   );
