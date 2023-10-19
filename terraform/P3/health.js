@@ -6,9 +6,6 @@ const client = new DynamoDBClient({});
 const dynamoDB = DynamoDBDocumentClient.from(client);
 const dynamoDBTableName = "clients";
 
-// Resources(endpoints) created in API Gateway
-const healthPath = "/health";
-
 export const handler = async (event) => {
   const response = {
     statusCode: 200,

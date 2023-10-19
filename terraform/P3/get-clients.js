@@ -1,6 +1,5 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
-import { randomUUID } from "crypto";
+import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 
 const client = new DynamoDBClient({});
 
@@ -10,32 +9,27 @@ const dynamoDBTableName = "clients";
 export const handler = async (event) => {
   const params = {
     TableName: dynamoDBTableName,
-    Item: {
-      id: randomUUID(),
-      name: event.name,
-      email: event.email,
-    },
   };
 
-  return await dynamoDB.send(new PutCommand(params)).then(
-    () => {
-      console.log("Added item to DynamoDB");
+  return await dynamoDB.scan(params).then(
+    (items) => {
+      console.log(items);
       return {
         statusCode: 201,
         headers: {
           "Content-Type": "application/json",
         },
-        body: params,
+        body: items,
       };
     },
     (err) => {
-      console.log("ERROR in Save Client: ", err);
+      console.log("ERROR in Getting Clients: ", err);
       return {
         statusCode: 404,
         headers: {
           "Content-Type": "application/json",
         },
-        body: "ERROR in Save Client: " + JSON.stringify(err),
+        body: "ERROR in Getting Clients: " + JSON.stringify(err),
       };
     }
   );
