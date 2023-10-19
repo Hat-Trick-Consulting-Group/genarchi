@@ -42,6 +42,14 @@ curl -X PUT https://26ywp15fia.execute-api.eu-west-3.amazonaws.com/prod/update-c
 }'
 ```
 
+/delete-client
+
+```
+curl -X DELETE https://26ywp15fia.execute-api.eu-west-3.amazonaws.com/prod/delete-client -H "Content-Type: application/json" -d '{
+  "id": "11d43f3b-a1b9-414c-989a-2e7f961478d5"
+}'
+```
+
 # Doc :
 
 For foreign key, we use crypto UUID to get a unique value for each item in the table (builtin js package)
