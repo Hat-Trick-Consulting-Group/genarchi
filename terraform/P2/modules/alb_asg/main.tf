@@ -71,17 +71,25 @@ resource "aws_launch_configuration" "webapp-launchconfig" {
     }
 }
 
+# ALB Targets
+resource "aws_lb_target_group" "webapp-target-group" {
+    name = "webapp-tg"
+    port = var.webserver_port
+    protocol = var.webserver_protocol
+    vpc_id = var.vpc_id
+}
+
 # ASG
 resource "aws_autoscaling_group" "webapp-autoscaling" {
     name = "webapp-autoscaling"
-    vpc_zone_identifier = var.private_subnet_ids #Error here, maybe bcs of the repo architecture ?
+    vpc_zone_identifier = var.private_subnet_ids
     launch_configuration = aws_launch_configuration.webapp-launchconfig.name
     min_size = var.min_instance #nb min of EC2 instances in asg
     desired_capacity = var.desired_instance #nb of EC2 instances at start in asg
     max_size = var.max_instance #nb max of EC2 instances in asg
     health_check_grace_period = 300 #seconds before an instance is terminated if unhealthy
-    health_check_type = "ELB"
-    target_group_arns = [ aws_lb_target_group.alb-target-group.arn ] #TODEFINE !!! ARN = Amazon Resource Names
+    health_check_type = "ELB" #TODO CHECK
+    target_group_arns = [ aws_lb_target_group.webapp-target-group.arn ] #ARN = Amazon Resource Names
     force_delete = true
 
     tag {
@@ -104,13 +112,6 @@ resource "aws_lb" "webapp-alb" {
     }
 }
 
-# ALB Targets
-resource "aws_lb_target_group" "alb-target-group" {
-    name = "webapp-tg"
-    port = var.webserver_port
-    protocol = var.webserver_protocol
-    vpc_id = var.vpc_id
-}
 
 # ALB listener
 resource "aws_lb_listener" "alb-listener" {
@@ -120,6 +121,6 @@ resource "aws_lb_listener" "alb-listener" {
 
   default_action {
     type = "forward"
-    target_group_arn = "${aws_lb_target_group.alb-target_group.arn}"
+    target_group_arn = "${aws_lb_target_group.webapp-target-group.arn}"
   }
 }

@@ -1,4 +1,6 @@
 ./terraform/P2/providers/*
+./terraform/P2/.terraform
+./terraform/P3/.terraform
 ./terraform/P3/providers/*
 *.lock.hcl
 *.tfstate
