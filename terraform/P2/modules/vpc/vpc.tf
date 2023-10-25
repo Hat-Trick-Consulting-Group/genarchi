@@ -84,6 +84,6 @@ resource "aws_route_table" "main-private" {
   }
 
   tags = {
-    Name = "main-private"
+    Name = "main-private
   }
 }

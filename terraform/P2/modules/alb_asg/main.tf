@@ -70,3 +70,56 @@ resource "aws_launch_configuration" "webapp-launchconfig" {
         create_before_destroy = true
     }
 }
+
+# ASG
+resource "aws_autoscaling_group" "webapp-autoscaling" {
+    name = "webapp-autoscaling"
+    vpc_zone_identifier = var.private_subnet_ids #Error here, maybe bcs of the repo architecture ?
+    launch_configuration = aws_launch_configuration.webapp-launchconfig.name
+    min_size = var.min_instance #nb min of EC2 instances in asg
+    desired_capacity = var.desired_instance #nb of EC2 instances at start in asg
+    max_size = var.max_instance #nb max of EC2 instances in asg
+    health_check_grace_period = 300 #seconds before an instance is terminated if unhealthy
+    health_check_type = "ELB"
+    target_group_arns = [ aws_lb_target_group.alb-target-group.arn ] #TODEFINE !!! ARN = Amazon Resource Names
+    force_delete = true
+
+    tag {
+      key = "Name"
+      value = "webapp"
+      propagate_at_launch = true
+    }
+}
+
+# ALB
+resource "aws_lb" "webapp-alb" {
+    name = "webapp-alb"
+    internal = false
+    load_balancer_type = "application"
+    subnets = var.public_subnet_ids
+    security_groups = [aws_security_group.sg-ALB-public.id]
+
+    tags = {
+      Name = "webapp-alb-tf"
+    }
+}
+
+# ALB Targets
+resource "aws_lb_target_group" "alb-target-group" {
+    name = "webapp-tg"
+    port = var.webserver_port
+    protocol = var.webserver_protocol
+    vpc_id = var.vpc_id
+}
+
+# ALB listener
+resource "aws_lb_listener" "alb-listener" {
+  load_balancer_arn = "${aws_lb.webapp-alb.arn}"
+  port = var.webserver_port
+  protocol = var.webserver_protocol
+
+  default_action {
+    type = "forward"
+    target_group_arn = "${aws_lb_target_group.alb-target_group.arn}"
+  }
+}
