@@ -15,10 +15,10 @@ provider "aws" {
 
 module "vpc" {
   source = "./modules/vpc"
-  vpc_cidr = var.vpc_cidr
-  public_subnet_cidrs = var.public_subnet_cidrs
-  private_subnet_cidrs = var.private_subnet_cidrs
-  availability_zones = var.availability_zones
+  vpc_cidr = "10.0.0.0/16"
+  public_subnet_cidr = "10.0.1.0/24"
+  private_subnet_cidr = "10.0.2.0/24"
+  azs = "eu-west-3a"
 }
 
 module "my_alb_asg" {
