@@ -12,8 +12,8 @@ resource "aws_security_group" "sg-ALB-public" {
   }
 
   ingress = {
-    from_port = var.webserver_port
-    to_port = var.webserver_port
+    from_port = var.webapp_instance_port
+    to_port = var.webapp_instance_port
     protocol = "tcp"
     cidr_blocks = ["0.0.0/0"]
   }
@@ -35,12 +35,20 @@ resource "aws_security_group" "sg-WebApp" {
         cidr_blocks = ["0.0.0.0/0"]
     }
   
-    ingress = {
-        from_port = var.webapp_port
-        to_port = var.webapp_port
+    ingress {
+        from_port = var.webapp_front_port
+        to_port = var.webapp_front_port
         protocol = "tcp"
-        # Authorize traffic only from ALB security group
+        # traffic from ALB to EC2 instances is allowed only from ALB security group (sg-ALB-public) that is to say from ALB port 80 to EC2 instances port 80
         security_groups = [aws_security_group.sg-ALB-public.id]
+    }
+
+    ingress {
+      from_port = var.webapp_back_port
+      to_port = var.webapp_back_port
+      protocol = "tcp"
+      # traffic from ALB to EC2 instances is allowed only from ALB security group (sg-ALB-public) that is to say from ALB port 80 to EC2 instances port 80
+      security_groups = [aws_security_group.sg-ALB-public.id]
     }
 
     tags = {
@@ -50,7 +58,7 @@ resource "aws_security_group" "sg-WebApp" {
 
 # Get public key to connect to EC2 instances
 data "aws_key_pair" "mykeypair" {
-  key_name = var.key_name
+  key_name = var.ssh_key_name
   include_public_key = true
 }
 
@@ -63,20 +71,10 @@ resource "aws_launch_configuration" "webapp-launchconfig" {
     security_groups = [aws_security_group.sg-WebApp.id]
     #TODO: add user_data to setup env (dl go and node)
     user_data = var.user_data
-    #TODO: add iam_instance_profile to allow EC2 to access S3??????????????
-    iam_instance_profile = var.role_profile_name
 
     lifecycle {
         create_before_destroy = true
     }
-}
-
-# ALB Targets
-resource "aws_lb_target_group" "webapp-target-group" {
-    name = "webapp-tg"
-    port = var.webserver_port
-    protocol = var.webserver_protocol
-    vpc_id = var.vpc_id
 }
 
 # ASG
@@ -113,14 +111,42 @@ resource "aws_lb" "webapp-alb" {
 }
 
 
-# ALB listener
-resource "aws_lb_listener" "alb-listener" {
+# ALB listener front
+resource "aws_lb_listener" "frontend" {
   load_balancer_arn = "${aws_lb.webapp-alb.arn}"
-  port = var.webserver_port
-  protocol = var.webserver_protocol
+  port = var.alb_front_port
+  protocol = var.protocol
 
   default_action {
     type = "forward"
     target_group_arn = "${aws_lb_target_group.webapp-target-group.arn}"
   }
+}
+
+# ALB listener back
+resource "aws_lb_listener" "backend" {
+  load_balancer_arn = "${aws_lb.webapp-alb.arn}"
+  port = var.alb_back_port
+  protocol = var.protocol
+
+  default_action {
+    type = "forward"
+    target_group_arn = "${aws_lb_target_group.webapp-target-group.arn}"
+  }
+}
+
+# ALB Target front
+resource "aws_lb_target_group" "webapp-front-target-group" {
+    name = "webapp-tg"
+    port = var.webapp_instance_front_port
+    protocol = var.protocol
+    vpc_id = var.vpc_id
+}
+
+# ALB Target back
+resource "aws_lb_target_group" "webapp-back-target-group" {
+  name = "webapp-tg"
+  port = var.webapp_instance_back_port
+  protocol = var.protocol
+  vpc_id = var.vpc_id
 }

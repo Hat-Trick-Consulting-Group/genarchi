@@ -5,3 +5,4 @@
 *.lock.hcl
 *.tfstate
 *.tfstate.backup
+postgres-data/*

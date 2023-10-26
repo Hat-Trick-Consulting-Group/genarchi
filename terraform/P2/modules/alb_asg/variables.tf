@@ -1,18 +1,34 @@
 variable "vpc_id" {}
 
-variable "webserver_port" {
-    default = 80
-}
-
-variable "webserver_protocol" {
+variable "protocol" {
     default = "HTTP"
 }
 
-variable "webapp_port" {
+variable "alb_front_port" {
+    default = 80
+}
+
+variable "alb_back_port" {
+    default = 8080
+}
+
+variable "webapp_instance_front_port" {
+    default = 80
+}
+
+variable "webapp_instance_back_port" {
+    default = 8080
+}
+
+variable "webapp_front_port" {
     default = 5173
 }
 
-variable "key_name" {
+variable "webapp_back_port" {
+    default = 8080
+}
+
+variable "ssh_key_name" {
     default = "hat_trick_ssh_key"
 }
 
@@ -20,13 +36,7 @@ variable "ami" {
   default = "ami-0a4b7ff081ca1ded9"
 }
 
-variable "user_data" {
-  default = ""
-}
-
-variable "role_profile_name" {
-    default = ""
-}
+variable "user_data" {}
 
 variable "instance_type" {
     default = "t2.micro"

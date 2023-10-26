@@ -21,32 +21,51 @@ module "vpc" {
   azs = "eu-west-3a"
 }
 
-module "my_alb_asg" {
+module "alb_asg" {
     source               = "./modules/alb_asg"
-    webserver_port       = 80
-    webserver_protocol   = "HTTP"
+    alb_front_port = 80
+    alb_back_port = 8080
+    webapp_instance_front_port = 80
+    webapp_instance_back_port = 8080
+    webapp_front_port = 5173
+    webapp_back_port = 8080
+    protocol   = "HTTP"
     instance_type        = "t2.micro"
-    private_subnet_ids   = module.my_vpc.private_subnet_ids
-    public_subnet_ids    = module.my_vpc.public_subnet_ids
-    role_profile_name            = module.my_ec2_role_allow_s3.name
+    private_subnet_ids   = module.vpc.private_subnet_ids
+    public_subnet_ids    = module.vpc.public_subnet_ids
     min_instance         = 2
     desired_instance     = 2
     max_instance         = 3
-    ami                  = data.aws_ami.ubuntu-ami.id
-    path_to_public_key   = "path of your public key"
-    vpc_id               = module.my_vpc.vpc_id
-    prefix_name          = var.prefix_name
+    ami                  = "ami-0a4b7ff081ca1ded9"
+    ssh_key_name = "hat_trick_ssh_key"
+    vpc_id               = module.vpc.vpc_id
     user_data = <<-EOF
       #!/bin/bash
-      sudo apt-get update -y
-      sudo apt-get install -y apache2 awscli mysql-client php php-mysql
-      sudo systemctl start apache2
-      sudo systemctl enable apache2
-      sudo rm -f /var/www/html/index.html
-      sudo aws s3 sync  s3://${var.bucket_name}/ /var/www/html/
-      mysql -h ${module.my_rds.host} -u ${module.my_rds.username} -p${var.db_password} < /var/www/html/articles.sql
-      sudo sed -i 's/##DB_HOST##/${module.my_rds.host}/' /var/www/html/db-config.php
-      sudo sed -i 's/##DB_USER##/${module.my_rds.username}/' /var/www/html/db-config.php
-      sudo sed -i 's/##DB_PASSWORD##/${var.db_password}/' /var/www/html/db-config.php
-    EOF  
+
+      # Update the OS and install necessary packages
+      sudo yum update -y
+      sudo yum install -y docker git
+
+      # Install Docker Compose
+      sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+      sudo chmod +x /usr/local/bin/docker-compose
+
+      # Clone your Git repository
+      git clone https://github.com/Hat-Trick-Consulting-Group/genarchi.git
+
+      # Change directory to the cloned repository
+      cd your_repository_directory
+
+      # Start your Docker Compose services (assuming you have a Docker Compose file)
+      docker-compose up --build -d
+
+      # Change directory to the backend and run your Go application
+      cd backend
+      go run main.go &
+
+      # Change directory to the frontend and run your React application
+      cd ../frontend
+      npm install
+      npm run dev &
+    EOF
 }
