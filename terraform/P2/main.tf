@@ -14,32 +14,32 @@ provider "aws" {
 }
 
 module "vpc" {
-  source = "./modules/vpc"
-  vpc_cidr = "10.0.0.0/16"
-  public_subnet_cidr = "10.0.1.0/24"
+  source              = "./modules/vpc"
+  vpc_cidr            = "10.0.0.0/16"
+  public_subnet_cidr  = "10.0.1.0/24"
   private_subnet_cidr = "10.0.2.0/24"
-  azs = "eu-west-3a"
+  azs                 = "eu-west-3a"
 }
 
 module "alb_asg" {
-    source               = "./modules/alb_asg"
-    alb_front_port = 80
-    alb_back_port = 8080
-    webapp_instance_front_port = 80
-    webapp_instance_back_port = 8080
-    webapp_front_port = 5173
-    webapp_back_port = 8080
-    protocol   = "HTTP"
-    instance_type        = "t2.micro"
-    private_subnet_ids   = module.vpc.private_subnet_ids
-    public_subnet_ids    = module.vpc.public_subnet_ids
-    min_instance         = 2
-    desired_instance     = 2
-    max_instance         = 3
-    ami                  = "ami-0a4b7ff081ca1ded9"
-    ssh_key_name = "hat_trick_ssh_key"
-    vpc_id               = module.vpc.vpc_id
-    user_data = <<-EOF
+  source                     = "./modules/alb_asg"
+  alb_front_port             = 80
+  alb_back_port              = 8080
+  webapp_instance_front_port = 80
+  webapp_instance_back_port  = 8080
+  webapp_front_port          = 5173
+  webapp_back_port           = 8080
+  protocol                   = "HTTP"
+  instance_type              = "t2.micro"
+  private_subnet_ids         = module.vpc.private_subnet_ids
+  public_subnet_ids          = module.vpc.public_subnet_ids
+  min_instance               = 2
+  desired_instance           = 2
+  max_instance               = 3
+  ami                        = "ami-0a4b7ff081ca1ded9"
+  ssh_key_name               = "hat_trick_ssh_key"
+  vpc_id                     = module.vpc.vpc_id
+  user_data                  = <<-EOF
       #!/bin/bash
 
       # Update the OS and install necessary packages

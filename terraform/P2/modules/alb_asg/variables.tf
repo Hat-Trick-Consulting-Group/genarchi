@@ -1,35 +1,35 @@
 variable "vpc_id" {}
 
 variable "protocol" {
-    default = "HTTP"
+  default = "HTTP"
 }
 
 variable "alb_front_port" {
-    default = 80
+  default = 80
 }
 
 variable "alb_back_port" {
-    default = 8080
+  default = 8080
 }
 
 variable "webapp_instance_front_port" {
-    default = 80
+  default = 80
 }
 
 variable "webapp_instance_back_port" {
-    default = 8080
+  default = 8080
 }
 
 variable "webapp_front_port" {
-    default = 5173
+  default = 5173
 }
 
 variable "webapp_back_port" {
-    default = 8080
+  default = 8080
 }
 
 variable "ssh_key_name" {
-    default = "hat_trick_ssh_key"
+  default = "hat_trick_ssh_key"
 }
 
 variable "ami" {
@@ -39,30 +39,30 @@ variable "ami" {
 variable "user_data" {}
 
 variable "instance_type" {
-    default = "t2.micro"
+  default = "t2.micro"
 }
 
 # ===== ASG related stuff =====
 variable "min_instance" {
   description = "Min nb of EC2 instances in ASG"
-  default = 2
+  default     = 2
 }
 
 variable "desired_instance" {
   description = "Starting nb of EC2 instances in ASG"
-  default = 2
+  default     = 2
 }
 
 variable "max_instance" {
   description = "Max nb of EC2 instances in ASG"
-  default = 4
+  default     = 4
 }
 # ============================
 
 variable "private_subnet_ids" {
-    type = list
+  type = list(any)
 }
 
 variable "public_subnet_ids" {
-  type = list
+  type = list(any)
 }
