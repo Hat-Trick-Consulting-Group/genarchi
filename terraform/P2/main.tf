@@ -61,7 +61,7 @@ module "alb_asg" {
       git clone https://github.com/Hat-Trick-Consulting-Group/genarchi.git
 
       # Change directory to the cloned repository
-      cd your_repository_directory
+      cd genarchi
 
       # Start your Docker Compose services (assuming you have a Docker Compose file)
       docker-compose up --build -d
