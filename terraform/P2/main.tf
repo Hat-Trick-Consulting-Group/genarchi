@@ -14,11 +14,11 @@ provider "aws" {
 }
 
 module "vpc" {
-  source              = "./modules/vpc"
-  vpc_cidr            = "10.0.0.0/16"
-  public_subnets_cidr  = [ "10.0.1.0/24" ]
-  private_subnets_cidr = [ "10.0.2.0/24" ]
-  azs                 = "eu-west-3a"
+  source               = "./modules/vpc"
+  vpc_cidr             = "10.0.0.0/16"
+  public_subnets_cidr  = ["10.0.1.0/24"]
+  private_subnets_cidr = ["10.0.2.0/24"]
+  azs                  = "eu-west-3a"
 }
 
 module "alb_asg" {
