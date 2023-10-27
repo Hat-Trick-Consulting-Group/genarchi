@@ -50,12 +50,15 @@ module "alb_asg" {
       sudo yum install -y golang
 
       # Install Node.js and npm
-      curl -fsSL https://rpm.nodesource.com/setup_14.x | sudo bash -
-      sudo yum install -y nodejs
+      sudo yum install https://rpm.nodesource.com/pub_21.x/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm -y
+      sudo yum install nodejs -y --setopt=nodesource-nodejs.module_hotfixes=1
 
       # Install Docker Compose
       sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
       sudo chmod +x /usr/local/bin/docker-compose
+
+      sudo service docker start
+      sudo systemctl enable docker
 
       # Clone your Git repository
       git clone https://github.com/Hat-Trick-Consulting-Group/genarchi.git
@@ -64,7 +67,7 @@ module "alb_asg" {
       cd genarchi
 
       # Start your Docker Compose services (assuming you have a Docker Compose file)
-      docker-compose up --build -d
+      sudo docker-compose up --build -d
 
       # Change directory to the backend and run your Go application
       cd backend
