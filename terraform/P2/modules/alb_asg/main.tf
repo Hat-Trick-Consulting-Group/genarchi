@@ -1,10 +1,10 @@
 # Security group for ALB
 resource "aws_security_group" "sg-ALB-public" {
   vpc_id      = var.vpc_id
-  name        = "sg-ALB-public"
+  name        = "ALB-public-sg"
   description = "security group for the application load balancer"
 
-  egress = {
+  egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -26,16 +26,16 @@ resource "aws_security_group" "sg-ALB-public" {
   }
 
   tags = {
-    Name = "sg-ALB-public"
+    Name = "ALB-public"
   }
 }
 
 # Security groupe for WebApp ASG instances
 resource "aws_security_group" "sg-WebApp" {
   vpc_id      = var.vpc_id
-  name        = "sg-WebApp"
+  name        = "WebApp-sg"
   description = "security group for the WebApp instances"
-  egress = {
+  egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -63,20 +63,19 @@ resource "aws_security_group" "sg-WebApp" {
   }
 }
 
-# Get public key to connect to EC2 instances
-data "aws_key_pair" "mykeypair" {
-  key_name           = var.ssh_key_name
-  include_public_key = true
-}
+# # Get public key to connect to EC2 instances
+# data "aws_key_pair" "mykeypair" {
+#   key_name           = var.ssh_key_name
+#   include_public_key = true
+# }
 
 # Launch configuration for WebApp ASG
 resource "aws_launch_configuration" "webapp-launchconfig" {
   name_prefix     = "webapp-launchconfig"
   image_id        = var.ami
   instance_type   = var.instance_type
-  key_name        = aws_key_pair.mykeypair.key_name
+  key_name        = var.ssh_key_name # may fail
   security_groups = [aws_security_group.sg-WebApp.id]
-  #TODO: add user_data to setup env (dl go and node)
   user_data = var.user_data
 
   lifecycle {
@@ -94,7 +93,7 @@ resource "aws_autoscaling_group" "webapp-autoscaling" {
   max_size                  = var.max_instance                              #nb max of EC2 instances in asg
   health_check_grace_period = 300                                           #seconds before an instance is terminated if unhealthy
   health_check_type         = "ELB"                                         #TODO CHECK
-  target_group_arns         = [aws_lb_target_group.webapp-target-group.arn] #ARN = Amazon Resource Names
+  target_group_arns         = [ aws_lb_target_group.webapp-front-target-group.arn, aws_lb_target_group.webapp-back-target-group.arn ] #ARN = Amazon Resource Names
   force_delete              = true
 
   tag {
@@ -126,7 +125,7 @@ resource "aws_lb_listener" "frontend" {
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.webapp-target-group.arn
+    target_group_arn = aws_lb_target_group.webapp-front-target-group.arn
   }
 }
 
@@ -138,7 +137,7 @@ resource "aws_lb_listener" "backend" {
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.webapp-target-group.arn
+    target_group_arn = aws_lb_target_group.webapp-back-target-group.arn
   }
 }
 

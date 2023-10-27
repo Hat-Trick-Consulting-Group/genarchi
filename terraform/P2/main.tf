@@ -16,8 +16,8 @@ provider "aws" {
 module "vpc" {
   source              = "./modules/vpc"
   vpc_cidr            = "10.0.0.0/16"
-  public_subnet_cidr  = "10.0.1.0/24"
-  private_subnet_cidr = "10.0.2.0/24"
+  public_subnets_cidr  = [ "10.0.1.0/24" ]
+  private_subnets_cidr = [ "10.0.2.0/24" ]
   azs                 = "eu-west-3a"
 }
 
@@ -45,6 +45,13 @@ module "alb_asg" {
       # Update the OS and install necessary packages
       sudo yum update -y
       sudo yum install -y docker git
+
+      # Install Go (adjust the version as needed)
+      sudo yum install -y golang
+
+      # Install Node.js and npm
+      curl -fsSL https://rpm.nodesource.com/setup_14.x | sudo bash -
+      sudo yum install -y nodejs
 
       # Install Docker Compose
       sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
