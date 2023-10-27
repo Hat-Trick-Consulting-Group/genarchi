@@ -15,14 +15,14 @@ resource "aws_security_group" "sg-ALB-public" {
     from_port   = var.alb_front_port
     to_port     = var.alb_front_port
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
     from_port   = var.alb_back_port
     to_port     = var.alb_back_port
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {
@@ -143,7 +143,7 @@ resource "aws_lb_listener" "backend" {
 
 # ALB Target front
 resource "aws_lb_target_group" "webapp-front-target-group" {
-  name     = "webapp-tg"
+  name     = "webapp-front-tg"
   port     = var.webapp_instance_front_port
   protocol = var.protocol
   vpc_id   = var.vpc_id
@@ -151,7 +151,7 @@ resource "aws_lb_target_group" "webapp-front-target-group" {
 
 # ALB Target back
 resource "aws_lb_target_group" "webapp-back-target-group" {
-  name     = "webapp-tg"
+  name     = "webapp-back-tg"
   port     = var.webapp_instance_back_port
   protocol = var.protocol
   vpc_id   = var.vpc_id

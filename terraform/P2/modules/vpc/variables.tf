@@ -13,6 +13,7 @@ variable "private_subnets_cidr" {
 }
 
 variable "azs" {
+  type        = list
   description = "AZs to use in your public and private subnet  (make sure they are consistent with your AWS region)"
-  default     = "eu-west-3a"
+  default     = ["eu-west-3a", "eu-west-3b"]
 }
