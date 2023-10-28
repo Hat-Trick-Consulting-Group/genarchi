@@ -76,6 +76,9 @@ module "alb_asg" {
       # Change directory to the frontend and run your React application
       cd ../frontend
       npm install
-      npm run dev &
+      npm run build
+      sudo npm install -g serve
+      # Serve the production build on port 80 using 'serve'
+      sudo serve -s dist -l 80 &
     EOF
 }
