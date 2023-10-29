@@ -48,6 +48,8 @@ module "alb_asg" {
 
       # Install Go (adjust the version as needed)
       sudo yum install -y golang
+      export GOPATH=$HOME/go
+      export PATH=$PATH:$GOPATH/bin
 
       # Install Node.js and npm
       sudo yum install https://rpm.nodesource.com/pub_21.x/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm -y
@@ -75,7 +77,9 @@ module "alb_asg" {
 
       # Change directory to the frontend and run your React application
       cd ../frontend
-      export VITE_REACT_APP_API_URL=${module.alb_asg.alb_dns_name}
+      echo "VITE_API_URL=${module.alb_asg.alb_dns_name}" >> .env.production
+      echo "hello world"
+      cat .env.production
       npm install
       npm run build
 
