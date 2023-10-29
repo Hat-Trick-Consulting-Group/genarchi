@@ -27,7 +27,7 @@ module "alb_asg" {
   alb_back_port              = 8080
   webapp_instance_front_port = 80
   webapp_instance_back_port  = 8080
-  webapp_front_port          = 5173
+  webapp_front_port          = 80
   webapp_back_port           = 8080
   protocol                   = "HTTP"
   instance_type              = "t2.micro"
