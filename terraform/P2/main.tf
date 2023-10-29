@@ -67,6 +67,7 @@ module "alb_asg" {
 
       # Change directory to the cloned repository
       cd genarchi
+      git checkout terraform-p2-alb-asg
 
       # Start your Docker Compose services (assuming you have a Docker Compose file)
       sudo docker-compose up --build -d
@@ -77,7 +78,7 @@ module "alb_asg" {
 
       # Change directory to the frontend and run your React application
       cd ../frontend
-      echo "VITE_API_URL=${module.alb_asg.alb_dns_name}" >> .env.production
+      echo "VITE_API_URL=${module.alb_asg.alb_dns_name}:8080" >> .env.production
       echo "hello world"
       cat .env.production
       npm install
