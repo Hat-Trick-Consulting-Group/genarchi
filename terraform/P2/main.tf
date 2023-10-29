@@ -75,10 +75,12 @@ module "alb_asg" {
 
       # Change directory to the frontend and run your React application
       cd ../frontend
+      export VITE_REACT_APP_API_URL=${module.alb_asg.alb_dns_name}
       npm install
       npm run build
-      sudo npm install -g serve
+
       # Serve the production build on port 80 using 'serve'
+      sudo npm install -g serve
       sudo serve -s dist -l 80 --no-port-switching &
     EOF
 }
