@@ -78,8 +78,7 @@ module "alb_asg" {
 
       # Change directory to the frontend and run your React application
       cd ../frontend
-      echo "VITE_API_URL=${module.alb_asg.alb_dns_name}:8080" >> .env.production
-      echo "hello world"
+      echo "VITE_API_URL=http://${module.alb_asg.alb_dns_name}:8080" >> .env.production
       cat .env.production
       npm install
       npm run build

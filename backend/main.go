@@ -25,9 +25,11 @@ func main() {
 	// Initialize the Gin router
 	router := gin.Default()
 
-	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"*"} 
-	router.Use(cors.New(config))
+	// config := cors.Default()
+	// config.AllowOrigins = []string{"*"} 
+	// config.AllowAllOrigins = true
+	// router.Use(cors.New(config))
+	router.Use(cors.Default())
 
 	// Initialize the database connection
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",

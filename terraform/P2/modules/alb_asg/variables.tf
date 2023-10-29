@@ -21,7 +21,7 @@ variable "webapp_instance_back_port" {
 }
 
 variable "webapp_front_port" {
-  default = 5173
+  default = 80
 }
 
 variable "webapp_back_port" {
