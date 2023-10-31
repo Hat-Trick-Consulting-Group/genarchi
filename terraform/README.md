@@ -1,5 +1,6 @@
 # Terraform
 
+----------
 ## Tutorials
 
 Tutorials can be found at these adresses:
@@ -11,6 +12,8 @@ https://developer.hashicorp.com/terraform/tutorials
 https://devopssec.fr/article/construire-infrastructure-aws-hautement-disponible-terraform#begin-article-section
 
 A terraform lab can be found in the tutorial folder.
+
+---------
 
 ### Basics
 To start a terraform project:
@@ -53,6 +56,7 @@ terraform destroy
 ```
 to destroy the result of the terraform script.
 
+---------
 ### Few words on architecture of a terraform project:
 
 After a terraform init:
@@ -62,11 +66,28 @@ After a terraform init:
 After a terraform apply:
 - the file terraform.tfstate contains data of the configuration applied which is used by T to track which ressources it manages and sensitive info about these ressources.
 
+----------
+
+## Tips
+
+### Use env variables in Terraform
+
+For Terraform variables, there are two options:
+
+1. You can define them in the `output.tf` file located within a module (e.g., `modules/vpc/output.tf`).
+2. You can define them in the `vars.tf` file at the root of the project.
+
+To use these variables within modules, you should create a `variables.tf` file (e.g., `modules/asg_alb/variables.tf`) and add the variable name in it.
+
+---------
+
 ## Plateform 2
 
 Everything related to the plateform 2 deployment is in the P2 folder.
 
 TODO
+
+---------
 
 ## Plateform 3
 
