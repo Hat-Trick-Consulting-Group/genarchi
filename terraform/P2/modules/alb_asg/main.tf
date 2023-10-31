@@ -162,4 +162,12 @@ resource "aws_lb_target_group" "webapp-back-target-group" {
   port     = var.webapp_instance_back_port
   protocol = var.protocol
   vpc_id   = var.vpc_id
+  health_check {
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 10
+    interval            = 30
+    path                = "/health"
+    matcher             = "200"
+  }
 }
