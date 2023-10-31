@@ -48,7 +48,8 @@ module "alb_asg" {
 
       # Install Go (adjust the version as needed)
       sudo yum install -y golang
-      export GOPATH=$HOME/go
+      export GOPATH=/go
+      export GOCACHE=/go/cache
       export PATH=$PATH:$GOPATH/bin
 
       # Install Node.js and npm
