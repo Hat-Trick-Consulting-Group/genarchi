@@ -1,7 +1,7 @@
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = "http://localhost:8080/";
 
 export const getClients = () => {
-  return fetch(API_URL + "/get-clients")
+  return fetch(API_URL + "get-clients")
     .then((response) => response.json())
     .catch((error) => {
       console.error("Error fetching clients: ", error);
@@ -10,7 +10,7 @@ export const getClients = () => {
 };
 
 export const addClient = (newClient) => {
-  return fetch(API_URL + "/add-client", {
+  return fetch(API_URL + "add-client", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -32,7 +32,7 @@ export const addClient = (newClient) => {
 };
 
 export const updateClient = (updatedClient) => {
-  return fetch(API_URL + "/update-client", {
+  return fetch(API_URL + "update-client", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -54,7 +54,7 @@ export const updateClient = (updatedClient) => {
 };
 
 export const deleteClient = (clientToDelete) => {
-  return fetch(API_URL + "/delete-client", {
+  return fetch(API_URL + "delete-client", {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
