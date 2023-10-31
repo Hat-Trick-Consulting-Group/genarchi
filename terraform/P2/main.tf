@@ -85,6 +85,6 @@ module "alb_asg" {
 
       # Serve the production build on port 80 using 'serve'
       sudo npm install -g serve
-      sudo serve -s dist -l 80 --no-port-switching &
+      sudo serve -s dist -l 80 --no-port-switching --cors &
     EOF
 }
