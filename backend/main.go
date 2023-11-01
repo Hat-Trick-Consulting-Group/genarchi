@@ -3,8 +3,11 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 
 	"main/psql"
@@ -12,14 +15,6 @@ import (
 )
 
 // PostgreSQL represents the database connection information
-const (
-	psql_host     = "localhost"
-	psql_port     = 5432
-	psql_user     = "admin"
-	psql_password = "admin"
-	psql_dbname   = "crm"
-)
-
 func CORS() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
@@ -37,6 +32,32 @@ func CORS() gin.HandlerFunc {
 }
 
 func main() {
+	env := os.Getenv("GO_ENV")
+	var err error
+	if "" == env {
+		env = "development"
+		err = godotenv.Load(".env.development")
+	}
+	if env == "production" {
+		err = godotenv.Load(".env.production")	
+	}
+
+	if err != nil || env != "production" && env != "development" {
+		log.Fatal("Error loading .env file, current environment: " + env)
+	}
+
+	log.Println("Environment: " + env)
+
+	psql_host     := os.Getenv("PSQL_HOST")
+	psql_port, err    := strconv.Atoi(os.Getenv("PSQL_PORT"))
+	psql_user     := os.Getenv("PSQL_USER")
+	psql_password := os.Getenv("PSQL_PASSWORD")
+	psql_dbname   := os.Getenv("PSQL_DBNAME")
+	
+	if err != nil {
+		log.Fatal("Error converting PSQL_PORT to int")
+	}
+
 	// Initialize the Gin router
 	router := gin.Default()
 

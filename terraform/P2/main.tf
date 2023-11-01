@@ -57,5 +57,6 @@ module "database" {
     db_name     = "hat_trick_db"
     db_username = "hat_trick_user"
     db_password = "hat_trick_password"
+    db_port     = 5432
   })
 }
