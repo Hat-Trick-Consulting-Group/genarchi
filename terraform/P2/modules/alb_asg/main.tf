@@ -164,8 +164,8 @@ resource "aws_lb_target_group" "webapp-back-target-group" {
   vpc_id   = var.vpc_id
   health_check {
     healthy_threshold   = 2
-    unhealthy_threshold = 2
-    timeout             = 10
+    unhealthy_threshold = 6
+    timeout             = 15
     interval            = 30
     path                = "/health"
     matcher             = "200"

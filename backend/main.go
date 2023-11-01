@@ -68,7 +68,7 @@ func main() {
 	router.Use(CORS())
 
 	// Initialize the database connection
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable connect_timeout=0",
 		psql_host, psql_port, psql_user, psql_password, psql_dbname)
 	fmt.Printf("psqlInfo: %s\n", psqlInfo)
 
