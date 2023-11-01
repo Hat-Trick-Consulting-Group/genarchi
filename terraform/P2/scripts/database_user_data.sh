@@ -20,7 +20,7 @@ git checkout main
 # Set production environment variables
 mkdir db_config
 echo "DB_PORT=${db_port}" >> db_config/.env.production
-echo "DB_USER=${db_user}" >> db_config/.env.production
+echo "DB_USER=${db_username}" >> db_config/.env.production
 echo "DB_PASSWORD=${db_password}" >> db_config/.env.production
 echo "DB_NAME=${db_name}" >> db_config/.env.production
 

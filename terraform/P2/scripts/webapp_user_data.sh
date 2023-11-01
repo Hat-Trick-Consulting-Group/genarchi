@@ -35,7 +35,7 @@ export GO_ENV=production
 # Set .env.production variables
 echo "DB_HOST=${db_host}" >> .env.production
 echo "DB_PORT=${db_port}" >> .env.production
-echo "DB_USER=${db_user}" >> .env.production
+echo "DB_USER=${db_username}" >> .env.production
 echo "DB_PASSWORD=${db_password}" >> .env.production
 echo "DB_NAME=${db_name}" >> .env.production
 

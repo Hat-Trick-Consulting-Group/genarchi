@@ -48,7 +48,7 @@ module "alb_asg" {
   vpc_id                     = module.vpc.vpc_id
   user_data                  = templatefile("./scripts/webapp_user_data.sh", {
     alb_dns_name = module.alb_asg.alb_dns_name
-    db_host     = module.database.db_host.private_ip
+    db_host     = module.database.db_instance_id
     db_username = local.db_username
     db_password = local.db_password
     db_port     = local.db_port
