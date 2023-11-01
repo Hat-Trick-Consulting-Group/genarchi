@@ -15,7 +15,7 @@ resource "aws_security_group" "database" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    security_groups = var.webapp_sg_id
+    cidr_blocks = ["0.0.0.0/0"]
     self = true
   }
 

@@ -16,22 +16,21 @@ sudo yum install nodejs -y --setopt=nodesource-nodejs.module_hotfixes=1
 
 # Clone your Git repository
 git clone https://github.com/Hat-Trick-Consulting-Group/genarchi.git
-git checkout p2-v2-separate-db-from-app
 
 # Change directory to the cloned repository
 cd genarchi
-git checkout main
+git checkout p2-v2-separate-db-from-app
 
 # Change directory to the backend and run your Go application
 cd backend
 # Switch to the production environment to use .env.production
 export GO_ENV=production
 # Set .env.production variables
-echo "DB_HOST=${db_host}" >> .env.production
-echo "DB_PORT=${db_port}" >> .env.production
-echo "DB_USER=${db_username}" >> .env.production
-echo "DB_PASSWORD=${db_password}" >> .env.production
-echo "DB_NAME=${db_name}" >> .env.production
+echo "PSQL_HOST=${db_host}" >> .env.production
+echo "PSQL_PORT=${db_port}" >> .env.production
+echo "PSQL_USER=${db_username}" >> .env.production
+echo "PSQL_PASSWORD=${db_password}" >> .env.production
+echo "PSQL_DBNAME=${db_name}" >> .env.production
 
 go run main.go &
 
