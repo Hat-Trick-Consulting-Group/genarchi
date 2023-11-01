@@ -14,15 +14,9 @@ export PATH=$PATH:$GOPATH/bin
 sudo yum install https://rpm.nodesource.com/pub_21.x/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm -y
 sudo yum install nodejs -y --setopt=nodesource-nodejs.module_hotfixes=1
 
-# Install Docker Compose
-sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-
-sudo service docker start
-sudo systemctl enable docker
-
 # Clone your Git repository
 git clone https://github.com/Hat-Trick-Consulting-Group/genarchi.git
+git checkout p2-v2-separate-db-from-app
 
 # Change directory to the cloned repository
 cd genarchi

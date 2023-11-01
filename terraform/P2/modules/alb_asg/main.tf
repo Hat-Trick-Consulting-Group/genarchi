@@ -31,7 +31,7 @@ resource "aws_security_group" "sg-ALB-public" {
 }
 
 # Security groupe for WebApp ASG instances
-resource "aws_security_group" "sg-WebApp" {
+resource "aws_security_group" "sg-WebApp-instances" {
   vpc_id      = var.vpc_id
   name        = "WebApp-sg"
   description = "security group for the WebApp instances"
@@ -82,7 +82,7 @@ resource "aws_launch_configuration" "webapp-launchconfig" {
   image_id        = var.ami
   instance_type   = var.instance_type
   key_name        = var.ssh_key_name # may fail
-  security_groups = [aws_security_group.sg-WebApp.id]
+  security_groups = [aws_security_group.sg-WebApp-instances.id]
   user_data = var.user_data
 
   lifecycle {

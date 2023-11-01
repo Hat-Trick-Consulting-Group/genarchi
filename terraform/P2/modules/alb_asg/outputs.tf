@@ -3,5 +3,5 @@ output "alb_dns_name" {
 }
 
 output "webapp_sg_id" {
-  value = aws_security_group.sg-WebApp.id
+  value = [aws_security_group.sg-WebApp-instances.id]
 }

@@ -12,7 +12,7 @@ sudo service docker start
 sudo systemctl enable docker
 
 # Clone only the docker-compose.yml file from your Git repository
-git clone --depth 1 --branch main --no-checkout git@github.com:Hat-Trick-Consulting-Group/genarchi.git
+git clone --depth 1 --branch p2-v2-separate-db-from-app --no-checkout https://github.com/Hat-Trick-Consulting-Group/genarchi.git
 cd genarchi
 git sparse-checkout set docker-compose.yml
 git checkout main
@@ -25,4 +25,4 @@ echo "DB_PASSWORD=${db_password}" >> db_config/.env.production
 echo "DB_NAME=${db_name}" >> db_config/.env.production
 
 # Start your Docker Compose services (assuming you have a Docker Compose file)
-sudo docker compose --env-file ./db_config/.env.production up --build
+sudo docker-compose --env-file ./db_config/.env.production up --build

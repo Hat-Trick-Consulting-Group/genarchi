@@ -1,4 +1,4 @@
-output "db_instance_id" {
-  description = "The ID of the created EC2 instance."
-  value       = aws_instance.database.id
+output "db_instance_ip" {
+    description = "The IP address of the database instance"
+    value       = aws_instance.database.private_ip
 }

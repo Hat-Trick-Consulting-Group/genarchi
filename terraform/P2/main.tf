@@ -48,7 +48,7 @@ module "alb_asg" {
   vpc_id                     = module.vpc.vpc_id
   user_data                  = templatefile("./scripts/webapp_user_data.sh", {
     alb_dns_name = module.alb_asg.alb_dns_name
-    db_host     = module.database.db_instance_id
+    db_host     = module.database.db_instance_ip
     db_username = local.db_username
     db_password = local.db_password
     db_port     = local.db_port
@@ -71,4 +71,14 @@ module "database" {
     db_port     = local.db_port
     db_name     = local.db_name
   })
+}
+
+resource "null_resource" "print_alb_dns_name" {
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
+  provisioner "local-exec" {
+    command = "echo 'ALB DNS Name: ${module.alb_asg.alb_dns_name}'"
+  }
 }
