@@ -68,7 +68,7 @@ module "alb_asg" {
 
       # Change directory to the cloned repository
       cd genarchi
-      git checkout terraform-p2-alb-asg
+      git checkout main
 
       # Start your Docker Compose services (assuming you have a Docker Compose file)
       sudo docker-compose up --build -d
