@@ -17,5 +17,12 @@ cd genarchi
 git sparse-checkout set docker-compose.yml
 git checkout main
 
+# Set production environment variables
+mkdir db_config
+echo "DB_PORT=${db_port}" >> db_config/.env.production
+echo "DB_USER=${db_user}" >> db_config/.env.production
+echo "DB_PASSWORD=${db_password}" >> db_config/.env.production
+echo "DB_NAME=${db_name}" >> db_config/.env.production
+
 # Start your Docker Compose services (assuming you have a Docker Compose file)
-sudo docker-compose up --build -d
+sudo docker compose --env-file ./db_config/.env.production up --build
