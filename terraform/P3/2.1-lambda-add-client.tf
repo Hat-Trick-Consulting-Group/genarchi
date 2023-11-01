@@ -18,17 +18,17 @@ resource "aws_iam_role" "tf-add-client_lambda_exec" {
 POLICY
 }
 
-resource "aws_iam_role_policy_attachment" "add-client_policy" {
+resource "aws_iam_role_policy_attachment" "tf-add-client_policy" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
   role       = aws_iam_role.tf-add-client_lambda_exec.name
 }
 
-resource "aws_iam_role_policy_attachment" "cloudwatch_logs" {
+resource "aws_iam_role_policy_attachment" "tf-add-client_cloudwatch_logs" {
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
   role       = aws_iam_role.tf-add-client_lambda_exec.name
 }
 
-resource "aws_iam_role_policy_attachment" "dynamodb_full_access" {
+resource "aws_iam_role_policy_attachment" "tf-add-client_dynamodb_full_access" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
   role       = aws_iam_role.tf-add-client_lambda_exec.name
 }
@@ -40,7 +40,7 @@ resource "aws_lambda_function" "tf-add-client" {
   s3_key    = aws_s3_object.lambda_tf-add-client.key
 
   runtime = "nodejs18.x"
-  handler = "function.handler"
+  handler = "add-client.handler"
 
   source_code_hash = data.archive_file.lambda_tf-add-client.output_base64sha256
 
