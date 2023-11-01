@@ -21,6 +21,13 @@ module "vpc" {
   azs                  = ["eu-west-3a", "eu-west-3b"]
 }
 
+locals {
+  db_username = "hat_trick_user"
+  db_password = "hat_trick_password"
+  db_port     = 5432
+  db_name     = "hat_trick_db"
+}
+
 module "alb_asg" {
   source                     = "./modules/alb_asg"
   alb_front_port             = 80
@@ -41,6 +48,11 @@ module "alb_asg" {
   vpc_id                     = module.vpc.vpc_id
   user_data                  = templatefile("./scripts/webapp_user_data.sh", {
     alb_dns_name = module.alb_asg.alb_dns_name
+    db_host     = module.database.db_host.private_ip
+    db_username = local.db_username
+    db_password = local.db_password
+    db_port     = local.db_port
+    db_name     = local.db_name
   })
 }
 
@@ -54,9 +66,9 @@ module "database" {
   private_subnet_ids   = module.vpc.private_subnet_ids
   webapp_sg_id         = module.alb_asg.webapp_sg_id
   user_data            = templatefile("./scripts/database_user_data.sh", {
-    db_name     = "hat_trick_db"
-    db_username = "hat_trick_user"
-    db_password = "hat_trick_password"
-    db_port     = 5432
+    db_username = local.db_username
+    db_password = local.db_password
+    db_port     = local.db_port
+    db_name     = local.db_name
   })
 }

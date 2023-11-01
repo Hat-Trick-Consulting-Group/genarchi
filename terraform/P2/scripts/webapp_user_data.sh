@@ -30,6 +30,15 @@ git checkout main
 
 # Change directory to the backend and run your Go application
 cd backend
+# Switch to the production environment to use .env.production
+export GO_ENV=production
+# Set .env.production variables
+echo "DB_HOST=${db_host}" >> .env.production
+echo "DB_PORT=${db_port}" >> .env.production
+echo "DB_USER=${db_user}" >> .env.production
+echo "DB_PASSWORD=${db_password}" >> .env.production
+echo "DB_NAME=${db_name}" >> .env.production
+
 go run main.go &
 
 # Change directory to the frontend and run your React application
