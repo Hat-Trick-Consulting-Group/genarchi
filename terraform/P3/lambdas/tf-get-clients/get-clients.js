@@ -16,9 +16,9 @@ export const handler = async (event) => {
 
     // Transform the result.Items into the desired format
     const clients = result.Items.map((item) => ({
-      id: item.id.S,
-      name: item.name.S,
-      email: item.email.S,
+      id: item?.id?.S,
+      name: item?.name?.S,
+      email: item?.email?.S,
     }));
 
     return {
