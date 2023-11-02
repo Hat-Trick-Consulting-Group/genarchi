@@ -21,7 +21,3 @@ resource "aws_lambda_permission" "tf-update-client_api_gw" {
 
   source_arn = "${aws_apigatewayv2_api.hat-trick-crm-api.execution_arn}/*/*"
 }
-
-output "update-clients_base_url" {
-  value = aws_apigatewayv2_stage.prod.invoke_url
-}
