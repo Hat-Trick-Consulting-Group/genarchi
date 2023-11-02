@@ -1,0 +1,11 @@
+{
+  "name": "tf-add-client",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "add-client.js",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.438.0",
+    "@aws-sdk/lib-dynamodb": "^3.438.0"
+  },
+  "author": ""
+}
