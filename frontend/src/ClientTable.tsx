@@ -38,17 +38,19 @@ export function ClientTable({ clients, onRefresh, onUpdate, onDelete }: ClientTa
           </tr>
         </thead>
         <tbody>
-          {clients.map((client) => (
-            <tr key={client.id}>
-              <td>{client.id}</td>
-              <td>{client.name}</td>
-              <td>{client.email}</td>
-              <td>
-                <button onClick={() => handleUpdateClick(client)}>Update</button>
-                <button onClick={() => onDelete(client)}>Delete</button>
-              </td>
-            </tr>
-          ))}
+          {clients
+            ? clients.map((client) => (
+                <tr key={client.id}>
+                  <td>{client.id}</td>
+                  <td>{client.name}</td>
+                  <td>{client.email}</td>
+                  <td>
+                    <button onClick={() => handleUpdateClick(client)}>Update</button>
+                    <button onClick={() => onDelete(client)}>Delete</button>
+                  </td>
+                </tr>
+              ))
+            : "no clients"}
         </tbody>
       </table>
       {isUpdateVisible && (
