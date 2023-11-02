@@ -26,7 +26,7 @@ export const handler = async (event) => {
       headers: {
         "Content-Type": "application/json",
       },
-      clients: clients,
+      body: JSON.stringify({ clients }),
     };
   } catch (err) {
     return {
