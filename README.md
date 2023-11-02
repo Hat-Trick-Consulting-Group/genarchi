@@ -3,7 +3,7 @@
 ## For developpement purpose
 
 ```
-docker compose up --build
+docker compose --env-file ./db_config/.env.development up --build
 cd backend
 go run main.go
 cd ../frontend

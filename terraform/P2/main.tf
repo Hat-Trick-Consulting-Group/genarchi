@@ -21,6 +21,14 @@ module "vpc" {
   azs                  = ["eu-west-3a", "eu-west-3b"]
 }
 
+locals {
+  db_username = var.db_username
+  db_password = var.db_password
+  db_port     = 5432
+  db_name     = "hat_trick_db"
+  git_branch  = "p2-v2-separate-db-from-app"
+}
+
 module "alb_asg" {
   source                     = "./modules/alb_asg"
   alb_front_port             = 80
@@ -39,53 +47,41 @@ module "alb_asg" {
   ami                        = "ami-0a4b7ff081ca1ded9"
   ssh_key_name               = "hat_trick_ssh_key"
   vpc_id                     = module.vpc.vpc_id
-  user_data                  = <<-EOF
-      #!/bin/bash
+  user_data = templatefile("./scripts/webapp_user_data.sh", {
+    alb_dns_name = module.alb_asg.alb_dns_name
+    db_host      = module.database.db_instance_ip
+    db_username  = local.db_username
+    db_password  = local.db_password
+    db_port      = local.db_port
+    db_name      = local.db_name
+    git_branch   = local.git_branch
+  })
+}
 
-      # Update the OS and install necessary packages
-      sudo yum update -y
-      sudo yum install -y docker git
+module "database" {
+  source             = "./modules/database"
+  vpc_id             = module.vpc.vpc_id
+  db_port            = 5432
+  ami                = "ami-0a4b7ff081ca1ded9"
+  ssh_key_name       = "hat_trick_ssh_key"
+  instance_type      = "t2.micro"
+  private_subnet_ids = module.vpc.private_subnet_ids
+  webapp_sg_id       = module.alb_asg.webapp_sg_id
+  user_data = templatefile("./scripts/database_user_data.sh", {
+    db_username = local.db_username
+    db_password = local.db_password
+    db_port     = local.db_port
+    db_name     = local.db_name
+    git_branch  = local.git_branch
+  })
+}
 
-      # Install Go (adjust the version as needed)
-      sudo yum install -y golang
-      export GOPATH=/go
-      export GOCACHE=/go/cache
-      export PATH=$PATH:$GOPATH/bin
+resource "null_resource" "print_alb_dns_name" {
+  triggers = {
+    always_run = "${timestamp()}"
+  }
 
-      # Install Node.js and npm
-      sudo yum install https://rpm.nodesource.com/pub_21.x/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm -y
-      sudo yum install nodejs -y --setopt=nodesource-nodejs.module_hotfixes=1
-
-      # Install Docker Compose
-      sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-      sudo chmod +x /usr/local/bin/docker-compose
-
-      sudo service docker start
-      sudo systemctl enable docker
-
-      # Clone your Git repository
-      git clone https://github.com/Hat-Trick-Consulting-Group/genarchi.git
-
-      # Change directory to the cloned repository
-      cd genarchi
-      git checkout main
-
-      # Start your Docker Compose services (assuming you have a Docker Compose file)
-      sudo docker-compose up --build -d
-
-      # Change directory to the backend and run your Go application
-      cd backend
-      go run main.go &
-
-      # Change directory to the frontend and run your React application
-      cd ../frontend
-      echo "VITE_API_URL=http://${module.alb_asg.alb_dns_name}:8080" >> .env.production
-      cat .env.production
-      npm install
-      npm run build
-
-      # Serve the production build on port 80 using 'serve'
-      sudo npm install -g serve
-      sudo serve -s dist -l 80 --no-port-switching --cors &
-    EOF
+  provisioner "local-exec" {
+    command = "echo 'ALB DNS Name: ${module.alb_asg.alb_dns_name}'"
+  }
 }
