@@ -5,4 +5,5 @@ terraform/P3/.terraform
 *.lock.*
 *.tfstate
 *.tfstate.backup
-postgres-data/*
+mongodb/replica
+mongodb/primary

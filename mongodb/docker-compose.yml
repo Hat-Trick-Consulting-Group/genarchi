@@ -1,0 +1,27 @@
+version: "3.7"
+
+services:
+  primary-mongo:
+    image: mongo:latest
+    network_mode: "host"
+    container_name: primary-mongo
+    ports:
+      - $MDB_PRIMARY_PORT:27017
+    volumes:
+      - ./primary:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example_password
+    entrypoint: ["/bin/bash", "config/init-replication.sh"]  # Use the custom entry point script
+
+  replica-mongo:
+    image: mongo:latest
+    network_mode: "host"
+    container_name: replica-mongo
+    ports:
+      - $MDB_SECONDARY_PORT:27017
+    volumes:
+      - ./replica:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example_password
