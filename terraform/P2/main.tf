@@ -22,8 +22,8 @@ module "vpc" {
 }
 
 locals {
-  db_username = "hat_trick_user"
-  db_password = "hat_trick_password"
+  db_username = var.db_username
+  db_password = var.db_password
   db_port     = 5432
   db_name     = "hat_trick_db"
   git_branch  = "p2-v2-separate-db-from-app"
