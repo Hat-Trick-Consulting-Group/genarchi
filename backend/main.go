@@ -52,7 +52,8 @@ func main() {
 	log.Println("Environment: " + env)
 
 	// Define MongoDB connection options.
-	clientOptions := options.Client().ApplyURI("mongodb://root:example_password@primary-mongo:27017,replica-mongo:27017/?replicaSet=rs0")
+	clientOptions := options.Client().ApplyURI("mongodb://root:example_password@primary-mongo:27017,replica-mongo:27018/?replicaSet=rs0")
+
 
 	// Create a MongoDB client.
 	client, err := mongo.Connect(context.Background(), clientOptions)

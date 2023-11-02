@@ -1,10 +1,11 @@
 version: "3.7"
 
 services:
-# TODO change the primary-mongo to a dockerFile
   primary-mongo:
     image: mongo:latest
     container_name: primary-mongo
+    networks:
+      - mongo-cluster
     ports:
       - $MDB_PRIMARY_PORT:27017
     volumes:
@@ -12,12 +13,13 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example_password
-    entrypoint: ["/bin/bash", "config/init-replication.sh"]  # Use the custom entry point script
+    entrypoint: ["/bin/bash", "config/init-replication.sh"]
 
-# TODO change the replica-mongo to a dockerFile
   replica-mongo:
     image: mongo:latest
     container_name: replica-mongo
+    networks:
+      - mongo-cluster
     ports:
       - $MDB_SECONDARY_PORT:27017
     volumes:
@@ -25,3 +27,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example_password
+
+networks:
+  mongo-cluster:
+    driver: bridge
