@@ -23,5 +23,5 @@ resource "aws_lambda_permission" "tf-delete-client_api_gw" {
 }
 
 output "delet-clients_base_url" {
-  value = aws_apigatewayv2_stage.prod.invoke_url
+  value = "${aws_apigatewayv2_stage.prod.invoke_url}/delete-client"
 }
