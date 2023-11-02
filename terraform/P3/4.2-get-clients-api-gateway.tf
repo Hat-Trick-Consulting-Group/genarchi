@@ -13,7 +13,7 @@ resource "aws_apigatewayv2_route" "get_tf-get-clients" {
   target    = "integrations/${aws_apigatewayv2_integration.tf-get-clients.id}"
 }
 
-resource "aws_lambda_permission" "api_gw" {
+resource "aws_lambda_permission" "tf-get-clients_api_gw" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.tf-get-clients.function_name
