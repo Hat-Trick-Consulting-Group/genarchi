@@ -46,26 +46,26 @@ module "alb_asg" {
   ami                        = "ami-0a4b7ff081ca1ded9"
   ssh_key_name               = "hat_trick_ssh_key"
   vpc_id                     = module.vpc.vpc_id
-  user_data                  = templatefile("./scripts/webapp_user_data.sh", {
+  user_data = templatefile("./scripts/webapp_user_data.sh", {
     alb_dns_name = module.alb_asg.alb_dns_name
-    db_host     = module.database.db_instance_ip
-    db_username = local.db_username
-    db_password = local.db_password
-    db_port     = local.db_port
-    db_name     = local.db_name
+    db_host      = module.database.db_instance_ip
+    db_username  = local.db_username
+    db_password  = local.db_password
+    db_port      = local.db_port
+    db_name      = local.db_name
   })
 }
 
 module "database" {
-  source               = "./modules/database"
-  vpc_id               = module.vpc.vpc_id
-  db_port              = 5432
-  ami                  = "ami-0a4b7ff081ca1ded9"
-  ssh_key_name         = "hat_trick_ssh_key"
-  instance_type        = "t2.micro"
-  private_subnet_ids   = module.vpc.private_subnet_ids
-  webapp_sg_id         = module.alb_asg.webapp_sg_id
-  user_data            = templatefile("./scripts/database_user_data.sh", {
+  source             = "./modules/database"
+  vpc_id             = module.vpc.vpc_id
+  db_port            = 5432
+  ami                = "ami-0a4b7ff081ca1ded9"
+  ssh_key_name       = "hat_trick_ssh_key"
+  instance_type      = "t2.micro"
+  private_subnet_ids = module.vpc.private_subnet_ids
+  webapp_sg_id       = module.alb_asg.webapp_sg_id
+  user_data = templatefile("./scripts/database_user_data.sh", {
     db_username = local.db_username
     db_password = local.db_password
     db_port     = local.db_port

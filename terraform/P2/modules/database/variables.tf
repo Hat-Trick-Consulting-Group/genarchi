@@ -19,10 +19,10 @@ variable "instance_type" {
 }
 
 variable "private_subnet_ids" {
-  type = list
+  type = list(any)
 }
 
 variable "webapp_sg_id" {
-  type = list
+  type        = list(any)
   description = "security group for the WebApp instances"
 }
