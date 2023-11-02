@@ -19,7 +19,7 @@ git clone https://github.com/Hat-Trick-Consulting-Group/genarchi.git
 
 # Change directory to the cloned repository
 cd genarchi
-git checkout p2-v2-separate-db-from-app
+git checkout ${git_branch}
 
 # Change directory to the backend and run your Go application
 cd backend

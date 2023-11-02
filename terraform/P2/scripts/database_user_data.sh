@@ -12,10 +12,10 @@ sudo service docker start
 sudo systemctl enable docker
 
 # Clone only the docker-compose.yml file from your Git repository
-git clone --depth 1 --branch p2-v2-separate-db-from-app --no-checkout https://github.com/Hat-Trick-Consulting-Group/genarchi.git
+git clone --depth 1 --branch ${git_branch} --no-checkout https://github.com/Hat-Trick-Consulting-Group/genarchi.git
 cd genarchi
 git sparse-checkout set docker-compose.yml
-git checkout p2-v2-separate-db-from-app
+git checkout ${git_branch}
 
 # Set production environment variables
 mkdir db_config

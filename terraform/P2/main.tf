@@ -26,6 +26,7 @@ locals {
   db_password = "hat_trick_password"
   db_port     = 5432
   db_name     = "hat_trick_db"
+  git_branch  = "p2-v2-separate-db-from-app"
 }
 
 module "alb_asg" {
@@ -53,6 +54,7 @@ module "alb_asg" {
     db_password  = local.db_password
     db_port      = local.db_port
     db_name      = local.db_name
+    git_branch   = local.git_branch
   })
 }
 
@@ -70,6 +72,7 @@ module "database" {
     db_password = local.db_password
     db_port     = local.db_port
     db_name     = local.db_name
+    git_branch  = local.git_branch
   })
 }
 
