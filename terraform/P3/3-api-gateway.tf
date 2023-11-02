@@ -1,6 +1,12 @@
 resource "aws_apigatewayv2_api" "hat-trick-crm-api" {
   name          = "hat-trick-crm-api"
   protocol_type = "HTTP"
+
+    cors_configuration {
+    allow_origins = ["*"]
+    allow_methods = ["GET", "POST", "PUT", "DELETE"]
+    allow_headers = ["*"]
+  }
 }
 
 resource "aws_apigatewayv2_stage" "prod" {
