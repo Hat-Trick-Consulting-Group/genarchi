@@ -22,6 +22,7 @@ resource "aws_lambda_permission" "tf-health_api_gw" {
   source_arn = "${aws_apigatewayv2_api.hat-trick-crm-api.execution_arn}/*/*"
 }
 
-output "health_base_url" {
+output "api_gateway_base_url" {
+  description = "Api gateway base url, see README.md for more information"
   value = aws_apigatewayv2_stage.prod.invoke_url
 }
