@@ -6,3 +6,4 @@ terraform/P3/.terraform
 *.tfstate
 *.tfstate.backup
 postgres-data/*
+*.env.production
