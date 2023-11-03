@@ -8,6 +8,10 @@ const dynamoDB = DynamoDBDocumentClient.from(client);
 const dynamoDBTableName = "clients";
 
 export const handler = async (event) => {
+  if (event?.body) {
+    event = JSON.parse(event.body);
+  }
+
   const params = {
     TableName: dynamoDBTableName,
     Item: {
@@ -24,7 +28,7 @@ export const handler = async (event) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: params,
+        body: JSON.stringify(params),
       };
     },
     (err) => {
