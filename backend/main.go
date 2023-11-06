@@ -1,11 +1,15 @@
 package main
 
 import (
+	"context"
+	"fmt"
 	"log"
 	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // PostgreSQL represents the database connection information
@@ -40,7 +44,33 @@ func main() {
 		log.Fatal("Error loading .env file, current environment: " + env)
 	}
 
+	
 	log.Println("Environment: " + env)
+	
+	mongoURI := os.Getenv("MONGO_URI")
+    if mongoURI == "" {
+        fmt.Println("MONGO_URI environment variable is not set")
+        return
+    }
+
+	log.Println("MONGO_URI: " + mongoURI)
+
+	// Set up the MongoDB client options
+    clientOptions := options.Client().ApplyURI(mongoURI)
+
+    // Connect to MongoDB
+    client, err := mongo.Connect(context.Background(), clientOptions)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    // Check the connection
+    err = client.Ping(context.Background(), nil)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    fmt.Println("Connected to MongoDB!")
 
 	// Initialize the Gin router
 	router := gin.Default()
