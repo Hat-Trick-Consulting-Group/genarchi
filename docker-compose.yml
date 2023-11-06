@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   mongodb-primary:
     container_name: mongodb-primary
@@ -8,5 +8,5 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=pass
     volumes:
       - type: bind
-        source: ./mongodb-volumes
+        source: ./mongdb/mongodb-volumes
         target: /mongodb-volumes/db-primary

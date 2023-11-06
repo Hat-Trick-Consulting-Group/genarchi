@@ -3,7 +3,7 @@
 ## For developpement purpose
 
 ```
-docker compose --env-file ./db_config/.env.development up --build
+docker compose --env-file ./mongodb/db_config/.env.development up --build
 cd backend
 go run main.go
 cd ../frontend
@@ -11,6 +11,16 @@ npm run dev
 ```
 
 ## For deployment
+
+Connect to container
+
+```
+docker compose --env-file ./config/.env.development up --build
+docker ps | grep mongo
+docker exec -it 86057fb698e3 /bin/bash
+mongosh
+use admin
+```
 
 Backend :
 
