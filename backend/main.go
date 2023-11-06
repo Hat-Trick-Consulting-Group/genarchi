@@ -10,6 +10,8 @@ import (
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+
+	"main/routes"
 )
 
 // PostgreSQL represents the database connection information
@@ -75,10 +77,6 @@ func main() {
 	// Initialize the Gin router
 	router := gin.Default()
 
-	// config := cors.Default()
-	// config.AllowOrigins = []string{"*"} 
-	// config.AllowAllOrigins = true
-	// router.Use(cors.New(config))
 	router.Use(CORS())
 
 
@@ -87,8 +85,8 @@ func main() {
 	// 	log.Fatalf("Failed to create 'clients' table: %v", err)
 	// }
 
-	// // Add routes to handle API requests
-	// router.GET("/health", routes.GetStatusHandler)
+	// Add routes to handle API requests
+	router.GET("/health", routes.GetStatusHandler)
 	// router.POST("/add-client", func(c *gin.Context) {
     //     routes.CreateClientHandler(c, db)
     // })

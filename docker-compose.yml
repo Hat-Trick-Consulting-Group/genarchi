@@ -8,7 +8,7 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=pass123456
     volumes:
       - type: bind
-        source: ./mongdb/mongodb-volumes
+        source: ./mongodb/mongodb-volumes
         target: /mongodb-volumes/db-primary
     networks:
       - mongo-cluster
