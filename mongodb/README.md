@@ -1,5 +1,7 @@
 # Launch MongoDB
 
+Connect to container
+
 ```
 docker compose --env-file ./config/.env.development up --build
 docker ps | grep mongo
