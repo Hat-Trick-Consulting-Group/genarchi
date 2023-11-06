@@ -3,11 +3,19 @@
 ## For developpement purpose
 
 ```
-docker compose --env-file ./db_config/.env.development up --build
-cd backend
-go run main.go
-cd ../frontend
+docker compose --env-file ./mongodb/db_config/.env.development up --build
+cd frontend
 npm run dev
+```
+
+Connect to container
+
+```
+docker compose --env-file ./mongodb/config/.env.development up --build
+docker ps | grep mongo
+docker exec -it 86057fb698e3 /bin/bash
+mongosh
+use admin
 ```
 
 ## For deployment
@@ -34,7 +42,7 @@ After use /dist and expose it
 /health
 
 ```
-curl -i -v -X GET http://localhost:8080/health
+curl -i -v -X GET http://localhost:3042/health
 ```
 
 /add-clients

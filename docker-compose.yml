@@ -1,0 +1,30 @@
+version: "3"
+services:
+  mongodb-primary:
+    container_name: mongodb-primary
+    image: mongodb/mongodb-community-server:6.0-ubi8
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=pass123456
+    volumes:
+      - type: bind
+        source: ./mongodb/mongodb-volumes
+        target: /mongodb-volumes/db-primary
+    networks:
+      - mongo-cluster
+
+  go-api:
+    container_name: goapi
+    build:
+      context: backend/.
+      dockerfile: Dockerfile
+    ports:
+      - "3042:8080"
+    depends_on:
+      - "mongodb-primary"
+    networks:
+      - mongo-cluster
+
+networks:
+  mongo-cluster:
+    driver: bridge
