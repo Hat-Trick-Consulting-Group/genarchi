@@ -8,8 +8,6 @@ cd frontend
 npm run dev
 ```
 
-## For deployment
-
 Connect to container
 
 ```
@@ -19,6 +17,8 @@ docker exec -it 86057fb698e3 /bin/bash
 mongosh
 use admin
 ```
+
+## For deployment
 
 Backend :
 
