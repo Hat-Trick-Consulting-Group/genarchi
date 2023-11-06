@@ -48,7 +48,7 @@ curl -i -v -X GET http://localhost:3042/health
 /add-clients
 
 ```
-curl -X POST -H "Content-Type: application/json" -d '{"name":"John Doe","email":"johndoe@example.com"}' http://localhost:8080/add-client
+curl -X POST -d '{"id": 1, "name": "John Doe", "email": "john@example.com"}' -H "Content-Type: application/json" http://localhost:3042/add-client
 ```
 
 /get-clients
