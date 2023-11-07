@@ -98,9 +98,9 @@ func main() {
 	router.PUT("/update-client", func(c *gin.Context) {
 		routes.UpdateClientHandler(c, mongoClient.Database(databaseName))
 	})
-	// router.DELETE("/delete-client", func(c *gin.Context) {
-	// 	routes.DeleteClientHandler(c, db)
-	// })
+	router.DELETE("/delete-client", func(c *gin.Context) {
+		routes.DeleteClientHandler(c, mongoClient.Database(databaseName))
+	})
 
 
 	// Start the API server

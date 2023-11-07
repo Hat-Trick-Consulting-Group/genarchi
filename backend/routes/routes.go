@@ -113,3 +113,29 @@ func UpdateClientHandler(c *gin.Context, database *mongo.Database) {
 
     c.JSON(http.StatusOK, gin.H{"message": "Client updated successfully"})
 }
+
+func DeleteClientHandler(c *gin.Context, database *mongo.Database) {
+    var client models.Client
+    if err := c.ShouldBindJSON(&client); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+
+    collection := database.Collection(collectionName)
+
+    filter := bson.M{"name": client.Name}
+
+    // Delete the client by name
+    result, err := collection.DeleteMany(context.Background(), filter)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete client: " + err.Error()})
+        return
+    }
+
+    if result.DeletedCount == 0 {
+        c.JSON(http.StatusNotFound, gin.H{"error": "Client not found"})
+        return
+    }
+
+    c.JSON(http.StatusOK, gin.H{"message": "Client deleted successfully"})
+}
