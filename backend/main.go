@@ -31,6 +31,8 @@ func CORS() gin.HandlerFunc {
 	}
 }
 
+const databaseName = "genarchi-p2";
+
 func main() {
 	env := os.Getenv("GO_ENV")
 	var err error
@@ -61,13 +63,13 @@ func main() {
     clientOptions := options.Client().ApplyURI(mongoURI)
 
     // Connect to MongoDB
-    client, err := mongo.Connect(context.Background(), clientOptions)
+    mongoClient, err := mongo.Connect(context.Background(), clientOptions)
     if err != nil {
         log.Fatal(err)
     }
 
     // Check the connection
-    err = client.Ping(context.Background(), nil)
+    err = mongoClient.Ping(context.Background(), nil)
     if err != nil {
         log.Fatal(err)
     }
@@ -87,18 +89,18 @@ func main() {
 
 	// Add routes to handle API requests
 	router.GET("/health", routes.GetStatusHandler)
-	// router.POST("/add-client", func(c *gin.Context) {
-    //     routes.CreateClientHandler(c, db)
-    // })
-	// router.GET("/get-clients", func(c *gin.Context) {
-	// 	routes.GetClientsHandler(c, db)
-	// })
-	// router.PUT("/update-client", func(c *gin.Context) {
-	// 	routes.UpdateClientHandler(c, db)
-	// })
-	// router.DELETE("/delete-client", func(c *gin.Context) {
-	// 	routes.DeleteClientHandler(c, db)
-	// })
+	router.POST("/add-client", func(c *gin.Context) {
+        routes.CreateClientHandler(c, mongoClient.Database(databaseName))
+    })
+	router.GET("/get-clients", func(c *gin.Context) {
+		routes.GetClientsHandler(c, mongoClient.Database(databaseName))
+	})
+	router.PUT("/update-client", func(c *gin.Context) {
+		routes.UpdateClientHandler(c, mongoClient.Database(databaseName))
+	})
+	router.DELETE("/delete-client", func(c *gin.Context) {
+		routes.DeleteClientHandler(c, mongoClient.Database(databaseName))
+	})
 
 
 	// Start the API server

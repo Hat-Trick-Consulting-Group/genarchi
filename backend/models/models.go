@@ -1,7 +1,8 @@
 package models
 
 type Client struct {
-    ID    int    `json:"id"`
+    // mongo includes an ID field by default
+    ID    string    `json:"id"`
     Name  string `json:"name"`
     Email string `json:"email"`
 }
