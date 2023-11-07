@@ -21,7 +21,7 @@ func GetStatusHandler(c *gin.Context) {
 }
 
 func CreateClientHandler(c *gin.Context, database *mongo.Database) {
-	var client models.Client
+    var client models.Client
     if err := c.ShouldBindJSON(&client); err != nil {
         c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
         return
