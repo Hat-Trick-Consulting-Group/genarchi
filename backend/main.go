@@ -92,9 +92,9 @@ func main() {
 	router.POST("/add-client", func(c *gin.Context) {
         routes.CreateClientHandler(c, mongoClient.Database(databaseName))
     })
-	// router.GET("/get-clients", func(c *gin.Context) {
-	// 	routes.GetClientsHandler(c, db)
-	// })
+	router.GET("/get-clients", func(c *gin.Context) {
+		routes.GetClientsHandler(c, mongoClient.Database(databaseName))
+	})
 	// router.PUT("/update-client", func(c *gin.Context) {
 	// 	routes.UpdateClientHandler(c, db)
 	// })

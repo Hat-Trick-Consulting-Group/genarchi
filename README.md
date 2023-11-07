@@ -14,8 +14,9 @@ Connect to container
 docker compose --env-file ./mongodb/config/.env.development up --build
 docker ps | grep mongo
 docker exec -it 86057fb698e3 /bin/bash
-mongosh
-use admin
+mongosh mongodb://user:pass123456@localhost:27017
+use genarchi-p2
+db.clients.find()
 ```
 
 ## For deployment
@@ -54,7 +55,7 @@ curl -X POST -d '{"id": 1, "name": "John Doe", "email": "john@example.com"}' -H 
 /get-clients
 
 ```
-curl -X GET http://localhost:8080/get-clients
+curl -X GET http://localhost:3042/get-clients
 ```
 
 /update-client
