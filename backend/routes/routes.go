@@ -73,5 +73,5 @@ func GetClientsHandler(c *gin.Context, database *mongo.Database) {
 
     log.Println("client: ", clients)
 
-    c.JSON(http.StatusOK, clients)
+    c.JSON(http.StatusOK, gin.H{"clients": clients})
 }
