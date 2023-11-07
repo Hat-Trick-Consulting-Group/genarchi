@@ -95,9 +95,9 @@ func main() {
 	router.GET("/get-clients", func(c *gin.Context) {
 		routes.GetClientsHandler(c, mongoClient.Database(databaseName))
 	})
-	// router.PUT("/update-client", func(c *gin.Context) {
-	// 	routes.UpdateClientHandler(c, db)
-	// })
+	router.PUT("/update-client", func(c *gin.Context) {
+		routes.UpdateClientHandler(c, mongoClient.Database(databaseName))
+	})
 	// router.DELETE("/delete-client", func(c *gin.Context) {
 	// 	routes.DeleteClientHandler(c, db)
 	// })

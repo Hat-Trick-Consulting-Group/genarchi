@@ -8,7 +8,9 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 
 	"main/models"
 )
@@ -74,4 +76,40 @@ func GetClientsHandler(c *gin.Context, database *mongo.Database) {
     log.Println("client: ", clients)
 
     c.JSON(http.StatusOK, gin.H{"clients": clients})
+}
+
+func UpdateClientHandler(c *gin.Context, database *mongo.Database) {
+    var client models.Client
+    if err := c.ShouldBindJSON(&client); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+
+    collection := database.Collection(collectionName)
+    log.Println("client: ", client)
+
+    // Convert string client.ID to a MongoDB ObjectID
+    objID, err := primitive.ObjectIDFromHex(client.ID)
+    if err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid client ID format"})
+        return
+    }
+
+    filter := bson.M{"_id": objID}
+
+    update := bson.M{"$set": bson.M{"name": client.Name}}
+
+    // Define options to return the updated document
+    options := options.FindOneAndUpdate().SetReturnDocument(options.After)
+
+    var updatedClient models.Client
+    err = collection.FindOneAndUpdate(context.Background(), filter, update, options).Decode(&updatedClient)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update client: " + err.Error()})
+        return
+    }
+
+    log.Println("newClient: ", updatedClient)
+
+    c.JSON(http.StatusOK, gin.H{"message": "Client updated successfully"})
 }
