@@ -2,7 +2,6 @@ package routes
 
 import (
 	"context"
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -57,7 +56,8 @@ func GetClientsHandler(c *gin.Context, database *mongo.Database) {
         var client bson.M
         err := cursor.Decode(&client)
         if err != nil {
-            log.Fatal(err)
+            c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to decode client: " + err.Error()})
+            return
         }
         client["id"] = client["_id"]
         delete(client, "_id")
@@ -65,15 +65,12 @@ func GetClientsHandler(c *gin.Context, database *mongo.Database) {
     }
 
     if err := cursor.Err(); err != nil {
-        log.Fatal(err)
         c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to decode clients: " + err.Error()})
         return
     }
 
     //Close the cursor once finished
     cursor.Close(context.Background())
-
-    log.Println("client: ", clients)
 
     c.JSON(http.StatusOK, gin.H{"clients": clients})
 }
@@ -86,7 +83,6 @@ func UpdateClientHandler(c *gin.Context, database *mongo.Database) {
     }
 
     collection := database.Collection(collectionName)
-    log.Println("client: ", client)
 
     // Convert string client.ID to a MongoDB ObjectID
     objID, err := primitive.ObjectIDFromHex(client.ID)
@@ -108,8 +104,6 @@ func UpdateClientHandler(c *gin.Context, database *mongo.Database) {
         c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update client: " + err.Error()})
         return
     }
-
-    log.Println("newClient: ", updatedClient)
 
     c.JSON(http.StatusOK, gin.H{"message": "Client updated successfully"})
 }
