@@ -57,9 +57,8 @@ func GetClientsHandler(c *gin.Context, database *mongo.Database) {
         if err != nil {
             log.Fatal(err)
         }
-        log.Println("client: ", client)
-        log.Println("cursor: ", cursor)
-
+        client["id"] = client["_id"]
+        delete(client, "_id")
         clients = append(clients, client)
     }
 
