@@ -4,25 +4,15 @@
 sudo yum update -y
 sudo yum install -y docker git
 
-# Install Docker Compose
-sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-
-sudo service docker start
-sudo systemctl enable docker
-
-# Clone only the docker-compose.yml file from your Git repository
+# Clone only the mongodb folder from the repository
 git clone --depth 1 --branch ${git_branch} --no-checkout https://github.com/Hat-Trick-Consulting-Group/genarchi.git
 cd genarchi
-git sparse-checkout set docker-compose.yml
+git sparse-checkout set terraform/P2/scripts/mongodb
 git checkout ${git_branch}
+cd terraform/P2/scripts/mongodb
 
-# Set production environment variables
-mkdir db_config
-echo "PSQL_PORT=${db_port}" >> db_config/.env.production
-echo "PSQL_USER=${db_username}" >> db_config/.env.production
-echo "PSQL_PASSWORD=${db_password}" >> db_config/.env.production
-echo "PSQL_DBNAME=${db_name}" >> db_config/.env.production
+# Install MongoDB
+source ./install_mongodb.sh
 
-# Start your Docker Compose services (assuming you have a Docker Compose file)
-sudo docker-compose --env-file ./db_config/.env.production up --build
+# Start MongoDB
+source ./start_mongodb.sh
