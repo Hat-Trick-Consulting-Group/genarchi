@@ -5,7 +5,7 @@ resource "local_file" "api_config" {
   EOT
 }
 
-resource "null_resource" "npm_build" {
+resource "null_resource" "build_frontend" {
   triggers = {
     build_trigger = "../../frontend/.env.production"
   }
@@ -15,4 +15,6 @@ resource "null_resource" "npm_build" {
     
     working_dir = "../../frontend/"
   }
+
+  depends_on = [local_file.api_config]
 }

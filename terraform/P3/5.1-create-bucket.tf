@@ -10,7 +10,7 @@ resource "aws_s3_bucket_website_configuration" "tf-front_end_bucket_website" {
   }
 
   error_document {
-    key = "error.html"
+    key = "index.html"
   }
 }
 

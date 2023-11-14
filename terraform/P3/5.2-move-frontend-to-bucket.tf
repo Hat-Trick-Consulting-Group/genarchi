@@ -4,6 +4,8 @@ resource "aws_s3_object" "static_html" {
   source = "../../frontend/dist/index.html"
   content_type = "text/html"
   etag = filemd5("../../frontend/dist/index.html")
+
+  depends_on = [null_resource.build_frontend, local_file.api_config]
 }
 
 resource "aws_s3_object" "vite_svg" {
@@ -12,6 +14,8 @@ resource "aws_s3_object" "vite_svg" {
   source = "../../frontend/dist/vite.svg"
   content_type = "text/html"
   etag = filemd5("../../frontend/dist/vite.svg")
+
+  depends_on = [null_resource.build_frontend, local_file.api_config]
 }
 
 resource "aws_s3_object" "index_js" {
@@ -21,6 +25,8 @@ resource "aws_s3_object" "index_js" {
   source       = each.value
   content_type = lookup(local.content_types, regex("\\.[^.]+$", each.value), null)
   etag         = filemd5(each.value)
+
+  depends_on = [null_resource.build_frontend, local_file.api_config]
 }
 
 output "front_end_website_url" {
