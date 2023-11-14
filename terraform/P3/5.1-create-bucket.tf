@@ -20,6 +20,10 @@ resource "aws_s3_bucket_ownership_controls" "tf-front_end_bucket" {
   rule {
     object_ownership = "BucketOwnerPreferred"
   }
+
+  depends_on = [
+    aws_s3_bucket_public_access_block.tf-front_end_bucket,
+  ]
 }
 
 resource "aws_s3_bucket_public_access_block" "tf-front_end_bucket" {
@@ -57,4 +61,7 @@ resource "aws_s3_bucket_policy" "tf-front_end_bucket_policy" {
       ]
     }
   )
+  depends_on = [
+    aws_s3_bucket_public_access_block.tf-front_end_bucket,
+  ]
 }
