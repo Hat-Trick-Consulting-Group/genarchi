@@ -67,6 +67,13 @@ module "database" {
   })
 }
 
+module "cloudwatch_cpu_alarm" {
+  source = "./modules/cloudwatch"
+  min_cpu_percent_alarm = 5
+  max_cpu_percent_alarm = 80
+  asg_name = module.alb_asg.asg_name
+}
+
 resource "null_resource" "print_alb_dns_name" {
   triggers = {
     always_run = "${timestamp()}"
