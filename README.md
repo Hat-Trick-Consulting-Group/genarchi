@@ -1,5 +1,21 @@
 # Start
 
+To use terraform
+
+1. Export AWS_ACCESS_KEY_ID
+2. Export AWS_SECRET_ACCESS_KEY
+3. P2
+
+```
+cd terraform/P2
+```
+
+4. P3
+
+```
+cd terraform/P3
+```
+
 ## For developpement purpose
 
 ```
