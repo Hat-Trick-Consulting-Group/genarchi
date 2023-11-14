@@ -26,11 +26,7 @@ cd backend
 # Switch to the production environment to use .env.production
 export GO_ENV=production
 # Set .env.production variables
-echo "PSQL_HOST=${db_host}" >> .env.production
-echo "PSQL_PORT=${db_port}" >> .env.production
-echo "PSQL_USER=${db_username}" >> .env.production
-echo "PSQL_PASSWORD=${db_password}" >> .env.production
-echo "PSQL_DBNAME=${db_name}" >> .env.production
+echo "MONGO_URI=mongodb://${db_host_ip}:${db_port}" >> .env.production
 
 go run main.go &
 
