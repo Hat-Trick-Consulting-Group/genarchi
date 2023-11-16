@@ -9,7 +9,7 @@ resource "aws_autoscaling_policy" "cpu-policy-scaleup" {
 }
 
 # CPU metrics to scale up
-resource "aws_cloudwatch_metric_alarm" "cpu-alarm" {
+resource "aws_cloudwatch_metric_alarm" "cpu-alarm-scaleup" {
   alarm_name = "cpu-alarm"
   alarm_description = "cpu-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
