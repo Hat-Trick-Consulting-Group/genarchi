@@ -1,5 +1,5 @@
 resource "aws_s3_object" "static_html" {
-  bucket = aws_s3_bucket.tf-front_end_bucket.id
+  bucket = aws_s3_bucket.tf_front_end_bucket.id
   key    = "index.html"
   source = "../../frontend/dist/index.html"
   content_type = "text/html"
@@ -8,7 +8,7 @@ resource "aws_s3_object" "static_html" {
 }
 
 resource "aws_s3_object" "vite_svg" {
-  bucket = aws_s3_bucket.tf-front_end_bucket.id
+  bucket = aws_s3_bucket.tf_front_end_bucket.id
   key    = "vite.svg"
   source = "../../frontend/dist/vite.svg"
   content_type = "text/html"
@@ -17,7 +17,7 @@ resource "aws_s3_object" "vite_svg" {
 }
 
 resource "aws_s3_object" "index_js" {
-  bucket = aws_s3_bucket.tf-front_end_bucket.id
+  bucket = aws_s3_bucket.tf_front_end_bucket.id
   key    = "app-index.js"
   source = "../../frontend/dist/app-index.js"
   content_type = "application/javascript"
@@ -27,5 +27,5 @@ resource "aws_s3_object" "index_js" {
 
 output "front_end_website_url" {
   description = "S3 hosting URL (HTTP)"
-  value = "http://${aws_s3_bucket.tf-front_end_bucket.bucket}.s3-website.${var.AWS_REGION}.amazonaws.com"
+  value = "http://${aws_s3_bucket.tf_front_end_bucket.bucket}.s3-website.${var.AWS_REGION}.amazonaws.com"
 }
