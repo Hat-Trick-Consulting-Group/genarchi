@@ -2,8 +2,8 @@ resource "aws_s3_bucket" "tf_front_end_bucket" {
   bucket = "hat-trick-tf-front-end-bucket"
 }
 
-resource "aws_s3_bucket_website_configuration" "tf-front_end_bucket_website" {
-  bucket = aws_s3_bucket.tf-front_end_bucket.id
+resource "aws_s3_bucket_website_configuration" "tf_front_end_bucket_website" {
+  bucket = aws_s3_bucket.tf_front_end_bucket.id
 
   index_document {
     suffix = "index.html"
@@ -21,7 +21,7 @@ resource "aws_s3_bucket_ownership_controls" "tf_front_end_bucket" {
   }
 
   depends_on = [
-    aws_s3_bucket_public_access_block.tf-front_end_bucket,
+    aws_s3_bucket_public_access_block.tf_front_end_bucket,
   ]
 }
 
@@ -61,6 +61,6 @@ resource "aws_s3_bucket_policy" "tf_front_end_bucket_policy" {
     }
   )
   depends_on = [
-    aws_s3_bucket_public_access_block.tf-front_end_bucket,
+    aws_s3_bucket_public_access_block.tf_front_end_bucket,
   ]
 }
