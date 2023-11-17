@@ -4,7 +4,7 @@ resource "aws_autoscaling_policy" "cpu-policy-scaleup" {
     autoscaling_group_name = var.asg_name
     adjustment_type = "ChangeInCapacity"
     scaling_adjustment = 1 #Nb of members by which to scale
-    cooldown = 300 #Amount of time, in seconds, after a scaling activity completes and before the next scaling activity can start.
+    cooldown = 120 #Amount of time, in seconds, after a scaling activity completes and before the next scaling activity can start.
     policy_type = "SimpleScaling"
 }
 
@@ -16,7 +16,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu-alarm-scaleup" {
   evaluation_periods = 2 
   metric_name = "CPUUtilization"
   namespace = "AWS/EC2"
-  period = 120 #seconds
+  period = 10 #seconds
   statistic = "Average"
   threshold = var.max_cpu_percent_alarm
 
@@ -35,7 +35,7 @@ resource "aws_autoscaling_policy" "cpu-policy-scaledown" {
   autoscaling_group_name = var.asg_name
   adjustment_type = "ChangeInCapacity"
   scaling_adjustment = "-1"
-  cooldown = 300
+  cooldown = 120
   policy_type = "SimpleScaling"
 }
 
@@ -46,7 +46,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu-alarm-scaledown" {
   evaluation_periods = 2
   metric_name = "CPUUtilization"
   namespace = "AWS/EC2"
-  period = 120
+  period = 10
   statistic = "Average"
   threshold = var.min_cpu_percent_alarm
 
