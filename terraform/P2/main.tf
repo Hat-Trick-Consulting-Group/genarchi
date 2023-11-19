@@ -56,7 +56,7 @@ module "database" {
   source             = "./modules/database"
   vpc_id             = module.vpc.vpc_id
   db_port            = local.db_port
-  ami                = "ami-0a4b7ff081ca1ded9"
+  ami                = "ami-00983e8a26e4c9bd9"
   ssh_key_name       = "hat_trick_ssh_key"
   instance_type      = "t2.micro"
   private_subnet_ids = module.vpc.private_subnet_ids

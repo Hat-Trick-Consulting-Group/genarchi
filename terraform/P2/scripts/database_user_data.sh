@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # Update the OS and install necessary packages
-sudo yum update -y
-sudo yum install -y docker git
+sudo apt-get update
 
 # Clone only the mongodb folder from the repository
 git clone --depth 1 --branch ${git_branch} --no-checkout https://github.com/Hat-Trick-Consulting-Group/genarchi.git
