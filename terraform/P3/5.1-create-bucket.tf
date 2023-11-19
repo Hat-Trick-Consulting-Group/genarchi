@@ -1,17 +1,29 @@
 resource "aws_s3_bucket" "tf-front_end_bucket" {
   bucket = "hat-trick-tf-front-end-bucket"
+}
 
-  website {
-    index_document = "index.html"  # Specify the main entry point for your website
-    error_document = "index.html"  # Optional: Specify a custom error page
+resource "aws_s3_bucket_website_configuration" "tf-front_end_bucket_website" {
+  bucket = aws_s3_bucket.tf-front_end_bucket.id
+
+  index_document {
+    suffix = "index.html"
+  }
+
+  error_document {
+    key = "index.html"
   }
 }
 
 resource "aws_s3_bucket_ownership_controls" "tf-front_end_bucket" {
   bucket = aws_s3_bucket.tf-front_end_bucket.id
+
   rule {
     object_ownership = "BucketOwnerPreferred"
   }
+
+  depends_on = [
+    aws_s3_bucket_public_access_block.tf-front_end_bucket,
+  ]
 }
 
 resource "aws_s3_bucket_public_access_block" "tf-front_end_bucket" {
@@ -49,4 +61,7 @@ resource "aws_s3_bucket_policy" "tf-front_end_bucket_policy" {
       ]
     }
   )
+  depends_on = [
+    aws_s3_bucket_public_access_block.tf-front_end_bucket,
+  ]
 }
