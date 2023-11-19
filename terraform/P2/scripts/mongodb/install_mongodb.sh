@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# Configure the package management system
-sudo touch /etc/yum.repos.d/mongodb-org-7.0.repo
+# import the MongoDB public GPG key
+curl -fsSL https://pgp.mongodb.com/server-7.0.asc | \
+   sudo gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg \
+   --dearmor
 
-sudo echo "[mongodb-org-7.0]" >> /etc/yum.repos.d/mongodb-org-7.0.repo
-sudo echo "name=MongoDB Repository" >> /etc/yum.repos.d/mongodb-org-7.0.repo
-sudo echo "baseurl=https://repo.mongodb.org/yum/amazon/2023/mongodb-org/7.0/x86_64/" >> /etc/yum.repos.d/mongodb-org-7.0.repo
-sudo echo "gpgcheck=1" >> /etc/yum.repos.d/mongodb-org-7.0.repo
-sudo echo "enabled=1" >> /etc/yum.repos.d/mongodb-org-7.0.repo
-sudo echo "gpgkey=https://www.mongodb.org/static/pgp/server-7.0.asc" >> /etc/yum.repos.d/mongodb-org-7.0.repo
+# Create the list file /etc/apt/sources.list.d/mongodb-org-7.0.list
+echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+sudo apt-get update
 
-sudo yum install -y mongodb-org
+# Install the MongoDB packages
+sudo apt-get install -y --no-install-recommends mongodb-org
