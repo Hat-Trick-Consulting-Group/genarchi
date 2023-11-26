@@ -43,6 +43,8 @@ module "database_1" {
   user_data = templatefile("./scripts/database_user_data.sh", {
     db_port      = local.db_port
     git_branch   = local.git_branch
+    db_host_ip_1 = "" # only for database_3
+    db_host_ip_2 = "" # only for database_3
     is_last_node = false
   })
 }
@@ -57,6 +59,8 @@ module "database_2" {
   user_data = templatefile("./scripts/database_user_data.sh", {
     db_port      = local.db_port
     git_branch   = local.git_branch
+    db_host_ip_1 = "" # only for database_3
+    db_host_ip_2 = "" # only for database_3
     is_last_node = false
   })
 }

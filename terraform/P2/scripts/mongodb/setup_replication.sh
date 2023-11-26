@@ -2,12 +2,16 @@
 
 # File to be called in the primary node only
 
-# Wait for mongod to start
-sleep 10
+# Check if required arguments are provided
+if [ "$#" -ne 3 ]; then
+    echo "Usage: $0 <machine_ip_1> <machine_ip_2> <db_port>"
+    exit 1
+fi
 
-# Get the machine's IP address dynamically
-MONGO_HOST_1=${db_host_ip_1}
-MONGO_HOST_2=${db_host_ip_2}
+# Get machine IP addresses and MongoDB port from command-line arguments
+MONGO_HOST_1=$1
+MONGO_HOST_2=$2
+DB_PORT=$3
 MONGO_HOST_3=$(hostname -I | awk '{print $1}')
 
 # Print the MongoDB shell command for debugging
@@ -15,9 +19,9 @@ echo "Executing MongoDB shell command:"
 echo "mongosh --eval \"rs.initiate({
   _id: 'rs0',
   members: [
-    { _id: 0, host: '$MONGO_HOST_1:${db_port}' },
-    { _id: 1, host: '$MONGO_HOST_2:${db_port}' },
-    { _id: 2, host: '$MONGO_HOST_3:${db_port}' }
+    { _id: 0, host: '$MONGO_HOST_1:$DB_PORT' },
+    { _id: 1, host: '$MONGO_HOST_2:$DB_PORT' },
+    { _id: 2, host: '$MONGO_HOST_3:$DB_PORT' }
   ]
 })\""
 
@@ -25,9 +29,9 @@ echo "mongosh --eval \"rs.initiate({
 mongosh --eval "rs.initiate({
   _id: 'rs0',
   members: [
-    { _id: 0, host: '$MONGO_HOST_1:${db_port}' },
-    { _id: 1, host: '$MONGO_HOST_2:${db_port}' },
-    { _id: 2, host: '$MONGO_HOST_3:${db_port}' }
+    { _id: 0, host: '$MONGO_HOST_1:$DB_PORT' },
+    { _id: 1, host: '$MONGO_HOST_2:$DB_PORT' },
+    { _id: 2, host: '$MONGO_HOST_3:$DB_PORT' }
   ]
 })"
 status=$?
