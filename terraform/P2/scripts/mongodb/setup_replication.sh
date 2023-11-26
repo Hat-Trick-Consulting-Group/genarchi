@@ -11,8 +11,8 @@ MONGO_HOST_3=$(hostname -I | awk '{print $1}')
 mongosh --eval "rs.initiate({
   _id: 'rs0',
   members: [
-    { _id: 0, host: '$MONGO_HOST_1:27017' },
-    { _id: 1, host: '$MONGO_HOST_2:27017' },
-    { _id: 2, host: '$MONGO_HOST_3:27017' }
+    { _id: 0, host: '$MONGO_HOST_1:${db_port}' },
+    { _id: 1, host: '$MONGO_HOST_2:${db_port}' },
+    { _id: 2, host: '$MONGO_HOST_3:${db_port}' }
   ]
 })"
