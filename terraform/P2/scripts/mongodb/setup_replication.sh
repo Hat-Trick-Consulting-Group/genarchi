@@ -10,7 +10,7 @@ fi
 
 # Wait for the MongoDB service to start
 echo "Waiting for the MongoDB service to start..."
-sleep 10
+sleep 30
 
 # Get machine IP addresses and MongoDB port from command-line arguments
 MONGO_HOST_1=$1
