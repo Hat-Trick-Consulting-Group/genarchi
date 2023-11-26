@@ -8,6 +8,10 @@ if [ "$#" -ne 3 ]; then
     exit 1
 fi
 
+# Wait for the MongoDB service to start
+echo "Waiting for the MongoDB service to start..."
+sleep 10
+
 # Get machine IP addresses and MongoDB port from command-line arguments
 MONGO_HOST_1=$1
 MONGO_HOST_2=$2
