@@ -18,9 +18,7 @@ variable "instance_type" {
   default = "t2.micro"
 }
 
-variable "private_subnet_ids" {
-  type = list(any)
-}
+variable "private_subnet_id" {}
 
 variable "webapp_sg_id" {
   type        = list(any)

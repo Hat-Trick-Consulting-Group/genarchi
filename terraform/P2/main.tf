@@ -13,17 +13,67 @@ provider "aws" {
   region = var.AWS_REGION
 }
 
+locals {
+  db_port    = 27017
+  git_branch = "main"
+}
+
 module "vpc" {
   source               = "./modules/vpc"
   vpc_cidr             = "10.0.0.0/16"
   public_subnets_cidr  = ["10.0.1.0/24", "10.0.2.0/24"]
-  private_subnets_cidr = ["10.0.3.0/24"]
+  private_subnets_cidr = ["10.0.3.0/24", "10.0.4.0/24", "10.0.5.0/24"]
   azs                  = ["eu-west-3a", "eu-west-3b"]
 }
 
-locals {
-  db_port    = 27017
-  git_branch = "main"
+module "database_1" {
+  source             = "./modules/database"
+  vpc_id             = module.vpc.vpc_id
+  db_port            = local.db_port
+  ami                = "ami-00983e8a26e4c9bd9"
+  ssh_key_name       = "hat_trick_ssh_key"
+  instance_type      = "t2.micro"
+  private_subnet_id = module.vpc.private_subnet_ids[0]
+  webapp_sg_id       = module.alb_asg.webapp_sg_id
+  user_data = templatefile("./scripts/database_user_data.sh", {
+    db_port    = local.db_port
+    git_branch = local.git_branch
+    is_last_node = false
+  })
+}
+
+module "database_2" {
+  source             = "./modules/database"
+  vpc_id             = module.vpc.vpc_id
+  db_port            = local.db_port
+  ami                = "ami-00983e8a26e4c9bd9"
+  ssh_key_name       = "hat_trick_ssh_key"
+  instance_type      = "t2.micro"
+  private_subnet_id = module.vpc.private_subnet_ids[1]
+  webapp_sg_id       = module.alb_asg.webapp_sg_id
+  user_data = templatefile("./scripts/database_user_data.sh", {
+    db_port    = local.db_port
+    git_branch = local.git_branch
+    is_last_node = false
+  })
+}
+
+module "database_3" {
+  source             = "./modules/database"
+  vpc_id             = module.vpc.vpc_id
+  db_port            = local.db_port
+  ami                = "ami-00983e8a26e4c9bd9"
+  ssh_key_name       = "hat_trick_ssh_key"
+  instance_type      = "t2.micro"
+  private_subnet_id = module.vpc.private_subnet_ids[2]
+  webapp_sg_id       = module.alb_asg.webapp_sg_id
+  user_data = templatefile("./scripts/database_user_data.sh", {
+    db_port    = local.db_port
+    git_branch = local.git_branch
+    is_last_node = true
+    machine_ip_1 = module.database_1.db_instance_ip
+    machine_ip_2 = module.database_2.db_instance_ip
+  })
 }
 
 module "alb_asg" {
@@ -46,24 +96,11 @@ module "alb_asg" {
   vpc_id                     = module.vpc.vpc_id
   user_data = templatefile("./scripts/webapp_user_data.sh", {
     alb_dns_name = module.alb_asg.alb_dns_name
-    db_host_ip   = module.database.db_instance_ip
+    db_host_ip_1 = module.database_1.db_instance_ip
+    db_host_ip_2 = module.database_2.db_instance_ip
+    db_host_ip_3 = module.database_3.db_instance_ip
     db_port      = local.db_port
     git_branch   = local.git_branch
-  })
-}
-
-module "database" {
-  source             = "./modules/database"
-  vpc_id             = module.vpc.vpc_id
-  db_port            = local.db_port
-  ami                = "ami-00983e8a26e4c9bd9"
-  ssh_key_name       = "hat_trick_ssh_key"
-  instance_type      = "t2.micro"
-  private_subnet_ids = module.vpc.private_subnet_ids
-  webapp_sg_id       = module.alb_asg.webapp_sg_id
-  user_data = templatefile("./scripts/database_user_data.sh", {
-    db_port    = local.db_port
-    git_branch = local.git_branch
   })
 }
 

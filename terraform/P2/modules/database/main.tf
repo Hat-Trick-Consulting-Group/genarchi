@@ -35,7 +35,7 @@ resource "aws_instance" "database" {
   instance_type   = var.instance_type
   security_groups = [aws_security_group.database.id]
   key_name        = var.ssh_key_name
-  subnet_id       = var.private_subnet_ids[0]
+  subnet_id       = var.private_subnet_id
   user_data       = var.user_data
 
   lifecycle {
