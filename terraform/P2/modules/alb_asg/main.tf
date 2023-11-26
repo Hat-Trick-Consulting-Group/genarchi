@@ -93,7 +93,7 @@ resource "aws_launch_configuration" "webapp-launchconfig" {
 # ASG
 resource "aws_autoscaling_group" "webapp-autoscaling" {
   name                      = "webapp-autoscaling"
-  vpc_zone_identifier       = var.private_subnet_ids
+  vpc_zone_identifier       = var.private_subnet_ids[0] #TODO remove [0] for multiple availability zones
   launch_configuration      = aws_launch_configuration.webapp-launchconfig.name
   min_size                  = var.min_instance                                                                                      #nb min of EC2 instances in asg
   desired_capacity          = var.desired_instance                                                                                  #nb of EC2 instances at start in asg
