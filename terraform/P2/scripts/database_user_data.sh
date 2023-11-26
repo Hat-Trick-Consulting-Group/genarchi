@@ -13,5 +13,8 @@ cd terraform/P2/scripts/mongodb
 # Install MongoDB
 source ./install_mongodb.sh
 
+# Generate the MongoDB configuration file
+source ./generate_mongod_conf.sh
+
 # Start MongoDB
 source ./start_mongodb.sh
