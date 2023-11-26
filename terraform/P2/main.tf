@@ -15,7 +15,7 @@ provider "aws" {
 
 locals {
   db_port    = 27017
-  git_branch = "mongodb-iac-replication"
+  git_branch = "main"
 }
 
 module "vpc" {
