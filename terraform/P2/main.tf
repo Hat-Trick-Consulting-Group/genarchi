@@ -72,8 +72,8 @@ module "database_3" {
     db_port      = local.db_port
     git_branch   = local.git_branch
     is_last_node = true
-    machine_ip_1 = module.database_1.db_instance_ip
-    machine_ip_2 = module.database_2.db_instance_ip
+    db_host_ip_1 = module.database_1.db_instance_ip
+    db_host_ip_2 = module.database_2.db_instance_ip
   })
 }
 
