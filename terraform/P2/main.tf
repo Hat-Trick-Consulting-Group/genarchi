@@ -27,50 +27,50 @@ module "vpc" {
 }
 
 module "sg_database" {
-  source      = "./modules/database/sg_database"
-  vpc_id      = module.vpc.vpc_id
-  db_port     = local.db_port
+  source       = "./modules/database/sg_database"
+  vpc_id       = module.vpc.vpc_id
+  db_port      = local.db_port
   webapp_sg_id = module.alb_asg.webapp_sg_id
 }
 
 module "database_1" {
-  source             = "./modules/database/instance_database"
-  ami                = "ami-00983e8a26e4c9bd9"
-  ssh_key_name       = "hat_trick_ssh_key"
-  instance_type      = "t2.micro"
-  sg_db_id = module.sg_database.sg_db_id
+  source            = "./modules/database/instance_database"
+  ami               = "ami-00983e8a26e4c9bd9"
+  ssh_key_name      = "hat_trick_ssh_key"
+  instance_type     = "t2.micro"
+  sg_db_id          = module.sg_database.sg_db_id
   private_subnet_id = module.vpc.private_subnet_ids[0]
   user_data = templatefile("./scripts/database_user_data.sh", {
-    db_port    = local.db_port
-    git_branch = local.git_branch
+    db_port      = local.db_port
+    git_branch   = local.git_branch
     is_last_node = false
   })
 }
 
 module "database_2" {
-  source             = "./modules/database/instance_database"
-  ami                = "ami-00983e8a26e4c9bd9"
-  ssh_key_name       = "hat_trick_ssh_key"
-  instance_type      = "t2.micro"
-  sg_db_id = module.sg_database.sg_db_id
+  source            = "./modules/database/instance_database"
+  ami               = "ami-00983e8a26e4c9bd9"
+  ssh_key_name      = "hat_trick_ssh_key"
+  instance_type     = "t2.micro"
+  sg_db_id          = module.sg_database.sg_db_id
   private_subnet_id = module.vpc.private_subnet_ids[1]
   user_data = templatefile("./scripts/database_user_data.sh", {
-    db_port    = local.db_port
-    git_branch = local.git_branch
+    db_port      = local.db_port
+    git_branch   = local.git_branch
     is_last_node = false
   })
 }
 
 module "database_3" {
-  source             = "./modules/database/instance_database"
-  ami                = "ami-00983e8a26e4c9bd9"
-  ssh_key_name       = "hat_trick_ssh_key"
-  instance_type      = "t2.micro"
-  sg_db_id = module.sg_database.sg_db_id
+  source            = "./modules/database/instance_database"
+  ami               = "ami-00983e8a26e4c9bd9"
+  ssh_key_name      = "hat_trick_ssh_key"
+  instance_type     = "t2.micro"
+  sg_db_id          = module.sg_database.sg_db_id
   private_subnet_id = module.vpc.private_subnet_ids[2]
   user_data = templatefile("./scripts/database_user_data.sh", {
-    db_port    = local.db_port
-    git_branch = local.git_branch
+    db_port      = local.db_port
+    git_branch   = local.git_branch
     is_last_node = true
     machine_ip_1 = module.database_1.db_instance_ip
     machine_ip_2 = module.database_2.db_instance_ip
@@ -107,7 +107,7 @@ module "alb_asg" {
 
 module "cloudwatch_cpu_alarm" {
   source                = "./modules/cloudwatch"
-  min_cpu_percent_alarm = 5 #5
+  min_cpu_percent_alarm = 5  #5
   max_cpu_percent_alarm = 80 #80
   asg_name              = module.alb_asg.asg_name
 }
