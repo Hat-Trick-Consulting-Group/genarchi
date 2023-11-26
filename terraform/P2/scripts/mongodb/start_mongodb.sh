@@ -1,6 +1,5 @@
 #!/bin/bash
 
-sudo cp -rf ./mongod.conf /etc/
 sudo systemctl start mongod
 sudo systemctl status mongod
 
