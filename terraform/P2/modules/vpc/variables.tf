@@ -4,12 +4,22 @@ variable "vpc_cidr" {
 
 variable "public_subnets_cidr" {
   type    = list(any)
-  default = ["10.0.1.0/24"]
+  default = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+
+  validation {
+    condition     = length(var.public_subnets_cidr) == 3
+    error_message = "The length of the public subnet list must be 3"
+  }
 }
 
 variable "private_subnets_cidr" {
   type    = list(any)
-  default = ["10.0.3.0/24"]
+  default = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
+
+  validation {
+    condition     = length(var.private_subnets_cidr) == 3
+    error_message = "The length of the private subnet list must be 3"
+  }
 }
 
 variable "azs" {
