@@ -18,3 +18,8 @@ source ./generate_mongod_conf.sh
 
 # Start MongoDB
 source ./start_mongodb.sh
+
+# Setup MongoDB replication if this is the last node to be created
+if [ ${is_last_node} == "true" ]; then
+  source ./setup_replication.sh ${db_host_ip_1} ${db_host_ip_2} ${db_port}
+fi

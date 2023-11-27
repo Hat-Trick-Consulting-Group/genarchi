@@ -75,8 +75,8 @@ resource "aws_eip" "nat" {
 # Nat gw
 resource "aws_nat_gateway" "nat-gw" {
   allocation_id = aws_eip.nat.id
-  subnet_id     = aws_subnet.prod-subnet-public[0].id # public subnet why???
-  depends_on    = [aws_internet_gateway.main-gw]      # nat gw depends on internet gw??
+  subnet_id     = aws_subnet.prod-subnet-public[0].id
+  depends_on    = [aws_internet_gateway.main-gw]
 }
 
 # Private route table

@@ -26,8 +26,7 @@ cd backend
 # Switch to the production environment to use .env.production
 export GO_ENV=production
 # Set .env.production variables
-# TODO: update for later when implementing replication in IAC
-echo "MONGO_URI=mongodb://${db_host_ip}:${db_port}" >> .env.production
+echo "MONGO_URI=mongodb://${db_host_ip_1}:${db_port},${db_host_ip_2}:${db_port},${db_host_ip_3}:${db_port}/?replicaSet=rs0" >> .env.production
 
 go run main.go &
 
