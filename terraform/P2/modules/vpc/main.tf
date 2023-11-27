@@ -65,7 +65,7 @@ resource "aws_route_table_association" "associate-public" {
 # Elastic IP for NAT gw
 resource "aws_eip" "nat" {
   count = length(var.public_subnets_cidr)
-  vpc = true
+  vpc   = true
 
   tags = {
     Name = "main-eip"
@@ -74,7 +74,7 @@ resource "aws_eip" "nat" {
 
 # Nat gw
 resource "aws_nat_gateway" "nat-gw" {
-  count = length(var.public_subnets_cidr)
+  count         = length(var.public_subnets_cidr)
   allocation_id = aws_eip.nat[count.index].id
   subnet_id     = aws_subnet.prod-subnet-public[count.index].id
   depends_on    = [aws_internet_gateway.main-gw]
@@ -82,7 +82,7 @@ resource "aws_nat_gateway" "nat-gw" {
 
 # Private route table
 resource "aws_route_table" "private-subnet-route-table" {
-  count = length(var.private_subnets_cidr)
+  count  = length(var.private_subnets_cidr)
   vpc_id = aws_vpc.prod-vpc.id
 
   # 0.0.0.0/0 => all traffic from private subnet

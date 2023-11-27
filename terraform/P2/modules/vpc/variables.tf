@@ -17,7 +17,7 @@ variable "private_subnets_cidr" {
   default = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
 
   validation {
-    condition = length(var.private_subnets_cidr) == 3
+    condition     = length(var.private_subnets_cidr) == 3
     error_message = "The length of the private subnet list must be 3"
   }
 }
