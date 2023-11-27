@@ -93,9 +93,9 @@ module "alb_asg" {
   instance_type              = "t2.micro"
   private_subnet_ids         = module.vpc.private_subnet_ids
   public_subnet_ids          = module.vpc.public_subnet_ids
-  min_instance               = 2
-  desired_instance           = 2
-  max_instance               = 3
+  min_instance               = 3
+  desired_instance           = 3
+  max_instance               = 6
   ami                        = "ami-0a4b7ff081ca1ded9"
   ssh_key_name               = "hat_trick_ssh_key"
   vpc_id                     = module.vpc.vpc_id
