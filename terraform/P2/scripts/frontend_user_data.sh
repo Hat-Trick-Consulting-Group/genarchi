@@ -15,9 +15,13 @@ git clone https://github.com/Hat-Trick-Consulting-Group/genarchi.git
 cd genarchi
 git checkout ${git_branch}
 
+# Store ip address of current frontend instance
+FRONTEND_IP=$(hostname -I | awk '{print $1}')
+
 # Change directory to the frontend and run your React application
 cd frontend/
 echo "VITE_API_URL=http://${alb_dns_name}:8080" >> .env.production
+echo "VITE_FRONTEND_IP=$FRONTEND_IP" >> .env.production
 cat .env.production
 npm install
 npm run build
