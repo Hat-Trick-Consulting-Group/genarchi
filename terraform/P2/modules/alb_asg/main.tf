@@ -207,6 +207,14 @@ resource "aws_lb_target_group" "webapp-front-target-group" {
   port     = var.webapp_instance_front_port
   protocol = var.protocol
   vpc_id   = var.vpc_id
+  health_check {
+    healthy_threshold   = 5
+    unhealthy_threshold = 2
+    timeout             = 3
+    interval            = 5
+    path                = "/"
+    matcher             = "200"
+  }
 }
 
 # ALB Target back
@@ -216,10 +224,10 @@ resource "aws_lb_target_group" "webapp-back-target-group" {
   protocol = var.protocol
   vpc_id   = var.vpc_id
   health_check {
-    healthy_threshold   = 2
-    unhealthy_threshold = 6
-    timeout             = 15
-    interval            = 30
+    healthy_threshold   = 5
+    unhealthy_threshold = 2
+    timeout             = 3
+    interval            = 5
     path                = "/health"
     matcher             = "200"
   }
