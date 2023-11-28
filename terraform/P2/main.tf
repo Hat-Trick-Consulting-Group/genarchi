@@ -27,9 +27,9 @@ module "vpc" {
 }
 
 module "sg_database" {
-  source       = "./modules/database/sg_database"
-  vpc_id       = module.vpc.vpc_id
-  db_port      = local.db_port
+  source        = "./modules/database/sg_database"
+  vpc_id        = module.vpc.vpc_id
+  db_port       = local.db_port
   backend_sg_id = module.alb_asg.backend_sg_id
 }
 
@@ -99,7 +99,7 @@ module "alb_asg" {
   ami                        = "ami-0a4b7ff081ca1ded9"
   ssh_key_name               = "hat_trick_ssh_key"
   vpc_id                     = module.vpc.vpc_id
-  
+
   user_data_backend = templatefile("./scripts/backend_user_data.sh", {
     db_host_ip_1 = module.database_1.db_instance_ip
     db_host_ip_2 = module.database_2.db_instance_ip

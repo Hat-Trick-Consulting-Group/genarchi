@@ -127,13 +127,13 @@ resource "aws_launch_configuration" "frontend-launchconfig" {
 resource "aws_autoscaling_group" "backend-autoscaling" {
   name                      = "backend-autoscaling"
   vpc_zone_identifier       = var.private_subnet_ids
-  launch_configuration      = aws_launch_configuration.webapp-launchconfig.name
-  min_size                  = var.min_instance                                                                                      #nb min of EC2 instances in asg
-  desired_capacity          = var.desired_instance                                                                                  #nb of EC2 instances at start in asg
-  max_size                  = var.max_instance                                                                                      #nb max of EC2 instances in asg
-  health_check_grace_period = 300                                                                                                   #seconds before an instance is terminated if unhealthy
-  health_check_type         = "ELB"                                                                                                 #TODO CHECK
-  target_group_arns         = [aws_lb_target_group.webapp-back-target-group.arn]                                                    #ARN = Amazon Resource Names
+  launch_configuration      = aws_launch_configuration.backend-launchconfig.name
+  min_size                  = var.min_instance                                   #nb min of EC2 instances in asg
+  desired_capacity          = var.desired_instance                               #nb of EC2 instances at start in asg
+  max_size                  = var.max_instance                                   #nb max of EC2 instances in asg
+  health_check_grace_period = 300                                                #seconds before an instance is terminated if unhealthy
+  health_check_type         = "ELB"                                              #TODO CHECK
+  target_group_arns         = [aws_lb_target_group.webapp-back-target-group.arn] #ARN = Amazon Resource Names
   force_delete              = true
 
   tag {
@@ -148,11 +148,11 @@ resource "aws_autoscaling_group" "frontend-autoscaling" {
   name                      = "frontend-autoscaling"
   vpc_zone_identifier       = var.private_subnet_ids
   launch_configuration      = aws_launch_configuration.frontend-launchconfig.name
-  min_size                  = var.min_instance                                                                                      #nb min of EC2 instances in asg
-  desired_capacity          = var.desired_instance                                                                                  #nb of EC2 instances at start in asg
-  max_size                  = var.max_instance                                                                                      #nb max of EC2 instances in asg
-  health_check_grace_period = 300                                                                                                   #seconds before an instance is terminated if unhealthy
-  health_check_type         = "ELB"                                                                                                 #TODO CHECK
+  min_size                  = var.min_instance                                    #nb min of EC2 instances in asg
+  desired_capacity          = var.desired_instance                                #nb of EC2 instances at start in asg
+  max_size                  = var.max_instance                                    #nb max of EC2 instances in asg
+  health_check_grace_period = 300                                                 #seconds before an instance is terminated if unhealthy
+  health_check_type         = "ELB"                                               #TODO CHECK
   target_group_arns         = [aws_lb_target_group.webapp-front-target-group.arn] #ARN = Amazon Resource Names
   force_delete              = true
 
