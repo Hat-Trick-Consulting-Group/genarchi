@@ -1,5 +1,6 @@
 variable "asg_name" {
-  description = "ASG name used to increase or decrease ec2 instances"
+  type        = list(any)
+  description = "list of ASG name used to increase or decrease ec2 instances"
 }
 
 variable "max_cpu_percent_alarm" {

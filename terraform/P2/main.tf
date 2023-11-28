@@ -27,10 +27,10 @@ module "vpc" {
 }
 
 module "sg_database" {
-  source       = "./modules/database/sg_database"
-  vpc_id       = module.vpc.vpc_id
-  db_port      = local.db_port
-  webapp_sg_id = module.alb_asg.webapp_sg_id
+  source        = "./modules/database/sg_database"
+  vpc_id        = module.vpc.vpc_id
+  db_port       = local.db_port
+  backend_sg_id = module.alb_asg.backend_sg_id
 }
 
 module "database_1" {
@@ -99,12 +99,17 @@ module "alb_asg" {
   ami                        = "ami-0a4b7ff081ca1ded9"
   ssh_key_name               = "hat_trick_ssh_key"
   vpc_id                     = module.vpc.vpc_id
-  user_data = templatefile("./scripts/webapp_user_data.sh", {
-    alb_dns_name = module.alb_asg.alb_dns_name
+
+  user_data_backend = templatefile("./scripts/backend_user_data.sh", {
     db_host_ip_1 = module.database_1.db_instance_ip
     db_host_ip_2 = module.database_2.db_instance_ip
     db_host_ip_3 = module.database_3.db_instance_ip
     db_port      = local.db_port
+    git_branch   = local.git_branch
+  })
+
+  user_data_frontend = templatefile("./scripts/frontend_user_data.sh", {
+    alb_dns_name = module.alb_asg.alb_dns_name
     git_branch   = local.git_branch
   })
 }
@@ -113,7 +118,7 @@ module "cloudwatch_cpu_alarm" {
   source                = "./modules/cloudwatch"
   min_cpu_percent_alarm = 5  #5
   max_cpu_percent_alarm = 80 #80
-  asg_name              = module.alb_asg.asg_name
+  asg_name              = [module.alb_asg.asg_name_frontend, module.alb_asg.asg_name_backend]
 }
 
 resource "null_resource" "print_alb_dns_name" {
