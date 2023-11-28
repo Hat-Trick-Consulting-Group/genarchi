@@ -31,9 +31,11 @@ export function App() {
       .catch((error) => console.error("Error deleting client:", error));
   };
 
+  const FRONTEND_IP = import.meta.env.VITE_FRONTEND_IP;
+
   return (
     <div>
-      <h1>Hat Trick</h1>
+      <h1>Hat Trick        -        Frontend Instance IP: {FRONTEND_IP}</h1>
       <ClientAddition onSubmit={handleAddClient} />
       <ClientTable clients={clients} onRefresh={getClients} onUpdate={handleUpdateClient} onDelete={handleDeleteClient} />
     </div>
