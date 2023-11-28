@@ -30,7 +30,7 @@ module "sg_database" {
   source       = "./modules/database/sg_database"
   vpc_id       = module.vpc.vpc_id
   db_port      = local.db_port
-  webapp_sg_id = module.alb_asg.webapp_sg_id
+  backend_sg_id = module.alb_asg.backend_sg_id
 }
 
 module "database_1" {

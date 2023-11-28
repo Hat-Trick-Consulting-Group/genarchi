@@ -30,24 +30,16 @@ resource "aws_security_group" "sg-ALB-public" {
   }
 }
 
-# Security groupe for WebApp ASG instances
-resource "aws_security_group" "sg-WebApp-instances" {
+# Security groupe for Backend ASG instances
+resource "aws_security_group" "sg-backend-instances" {
   vpc_id      = var.vpc_id
-  name        = "WebApp-sg"
-  description = "security group for the WebApp instances"
+  name        = "Backend-sg"
+  description = "security group for the backend instances"
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port = var.webapp_front_port
-    to_port   = var.webapp_front_port
-    protocol  = "tcp"
-    # traffic from ALB to EC2 instances is allowed only from ALB security group (sg-ALB-public) that is to say from ALB port 80 to EC2 instances port 80
-    security_groups = [aws_security_group.sg-ALB-public.id]
   }
 
   ingress {
@@ -66,7 +58,40 @@ resource "aws_security_group" "sg-WebApp-instances" {
   }
 
   tags = {
-    Name = "sg-WebApp"
+    Name = "sg-backend"
+  }
+}
+
+
+# Security groupe for Frontend ASG instances
+resource "aws_security_group" "sg-frontend-instances" {
+  vpc_id      = var.vpc_id
+  name        = "Frontend-sg"
+  description = "security group for the frontend instances"
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port = var.webapp_front_port
+    to_port   = var.webapp_front_port
+    protocol  = "tcp"
+    # traffic from ALB to EC2 instances is allowed only from ALB security group (sg-ALB-public) that is to say from ALB port 80 to EC2 instances port 80
+    security_groups = [aws_security_group.sg-ALB-public.id]
+  }
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "sg-frontend"
   }
 }
 
