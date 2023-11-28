@@ -95,23 +95,37 @@ resource "aws_security_group" "sg-frontend-instances" {
   }
 }
 
-# Launch configuration for WebApp ASG
-resource "aws_launch_configuration" "webapp-launchconfig" {
-  name_prefix     = "webapp-launchconfig"
+# Launch configuration for backend ASG
+resource "aws_launch_configuration" "backend-launchconfig" {
+  name_prefix     = "backend-launchconfig"
   image_id        = var.ami
   instance_type   = var.instance_type
   key_name        = var.ssh_key_name # may fail
-  security_groups = [aws_security_group.sg-WebApp-instances.id]
-  user_data       = var.user_data
+  security_groups = [aws_security_group.sg-backend-instances.id]
+  user_data       = var.user_data_backend
 
   lifecycle {
     create_before_destroy = true
   }
 }
 
-# ASG
-resource "aws_autoscaling_group" "webapp-autoscaling" {
-  name                      = "webapp-autoscaling"
+# Launch configuration for  frontend ASG
+resource "aws_launch_configuration" "frontend-launchconfig" {
+  name_prefix     = "frontend-launchconfig"
+  image_id        = var.ami
+  instance_type   = var.instance_type
+  key_name        = var.ssh_key_name # may fail
+  security_groups = [aws_security_group.sg-frontend-instances.id]
+  user_data       = var.user_data_frontend
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+# ASG Backend
+resource "aws_autoscaling_group" "backend-autoscaling" {
+  name                      = "backend-autoscaling"
   vpc_zone_identifier       = var.private_subnet_ids
   launch_configuration      = aws_launch_configuration.webapp-launchconfig.name
   min_size                  = var.min_instance                                                                                      #nb min of EC2 instances in asg
@@ -119,12 +133,32 @@ resource "aws_autoscaling_group" "webapp-autoscaling" {
   max_size                  = var.max_instance                                                                                      #nb max of EC2 instances in asg
   health_check_grace_period = 300                                                                                                   #seconds before an instance is terminated if unhealthy
   health_check_type         = "ELB"                                                                                                 #TODO CHECK
-  target_group_arns         = [aws_lb_target_group.webapp-front-target-group.arn, aws_lb_target_group.webapp-back-target-group.arn] #ARN = Amazon Resource Names
+  target_group_arns         = [aws_lb_target_group.webapp-back-target-group.arn]                                                    #ARN = Amazon Resource Names
   force_delete              = true
 
   tag {
     key                 = "Name"
-    value               = "webapp"
+    value               = "backend"
+    propagate_at_launch = true
+  }
+}
+
+# ASG Frontend
+resource "aws_autoscaling_group" "frontend-autoscaling" {
+  name                      = "frontend-autoscaling"
+  vpc_zone_identifier       = var.private_subnet_ids
+  launch_configuration      = aws_launch_configuration.frontend-launchconfig.name
+  min_size                  = var.min_instance                                                                                      #nb min of EC2 instances in asg
+  desired_capacity          = var.desired_instance                                                                                  #nb of EC2 instances at start in asg
+  max_size                  = var.max_instance                                                                                      #nb max of EC2 instances in asg
+  health_check_grace_period = 300                                                                                                   #seconds before an instance is terminated if unhealthy
+  health_check_type         = "ELB"                                                                                                 #TODO CHECK
+  target_group_arns         = [aws_lb_target_group.webapp-front-target-group.arn] #ARN = Amazon Resource Names
+  force_delete              = true
+
+  tag {
+    key                 = "Name"
+    value               = "frontend"
     propagate_at_launch = true
   }
 }

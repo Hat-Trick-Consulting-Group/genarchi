@@ -36,7 +36,9 @@ variable "ami" {
   default = "ami-0a4b7ff081ca1ded9"
 }
 
-variable "user_data" {}
+variable "user_data_frontend" {}
+
+variable "user_data_backend" {}
 
 variable "instance_type" {
   default = "t2.micro"

@@ -1,7 +1,8 @@
 # Scale Up alarm
 resource "aws_autoscaling_policy" "cpu-policy-scaleup" {
-  name                   = "cpu-policy-scaleup"
-  autoscaling_group_name = var.asg_name
+  count                  = length(var.asg_name)
+  name                   = "cpu-policy-scaleup-${var.asg_name[count.index]}"
+  autoscaling_group_name = var.asg_name[count.index]
   adjustment_type        = "ChangeInCapacity"
   scaling_adjustment     = 1   #Nb of members by which to scale
   cooldown               = 120 #Amount of time, in seconds, after a scaling activity completes and before the next scaling activity can start.
@@ -10,8 +11,9 @@ resource "aws_autoscaling_policy" "cpu-policy-scaleup" {
 
 # CPU metrics to scale up
 resource "aws_cloudwatch_metric_alarm" "cpu-alarm-scaleup" {
-  alarm_name          = "cpu-alarm"
-  alarm_description   = "cpu-alarm"
+  count = length(var.asg_name)
+  alarm_name          = "cpu-alarm-${var.asg_name[count.index]}"
+  alarm_description   = "cpu-alarm-${var.asg_name[count.index]}"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = 2
   metric_name         = "CPUUtilization"
@@ -22,17 +24,18 @@ resource "aws_cloudwatch_metric_alarm" "cpu-alarm-scaleup" {
 
   #Add here ressources you want to monitor with the cloudwatch
   dimensions = {
-    "AutoScalingGroupName" = var.asg_name
+    "AutoScalingGroupName" = var.asg_name[count.index]
   }
 
   actions_enabled = true
-  alarm_actions   = [aws_autoscaling_policy.cpu-policy-scaleup.arn]
+  alarm_actions   = [aws_autoscaling_policy.cpu-policy-scaleup[count.index].arn]
 }
 
 # Scale down alarm
 resource "aws_autoscaling_policy" "cpu-policy-scaledown" {
-  name                   = "cpu-policy-scaledown"
-  autoscaling_group_name = var.asg_name
+  count                  = length(var.asg_name)
+  name                   = "cpu-policy-scaledown-${var.asg_name[count.index]}" 
+  autoscaling_group_name = var.asg_name[count.index]
   adjustment_type        = "ChangeInCapacity"
   scaling_adjustment     = "-1"
   cooldown               = 120
@@ -40,8 +43,9 @@ resource "aws_autoscaling_policy" "cpu-policy-scaledown" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "cpu-alarm-scaledown" {
-  alarm_name          = "cpu-alarm-scaledown"
-  alarm_description   = "cpu-alarm-scaledown"
+  count                  = length(var.asg_name)
+  alarm_name          = "cpu-alarm-scaledown-${var.asg_name[count.index]}"
+  alarm_description   = "cpu-alarm-scaledown-${var.asg_name[count.index]}"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = 2
   metric_name         = "CPUUtilization"
@@ -51,11 +55,11 @@ resource "aws_cloudwatch_metric_alarm" "cpu-alarm-scaledown" {
   threshold           = var.min_cpu_percent_alarm
 
   dimensions = {
-    "AutoScalingGroupName" = var.asg_name
+    "AutoScalingGroupName" = var.asg_name[count.index]
   }
 
   actions_enabled = true
-  alarm_actions   = [aws_autoscaling_policy.cpu-policy-scaledown.arn]
+  alarm_actions   = [aws_autoscaling_policy.cpu-policy-scaledown[count.index].arn]
 }
 
 
