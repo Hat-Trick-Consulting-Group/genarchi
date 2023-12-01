@@ -8,10 +8,14 @@ export function App() {
   const [clients, setClients] = useState([]);
 
   useEffect(() => {
+    handleGetClients();
+  }, []);
+
+  const handleGetClients = () => {
     getClients()
       .then((data) => setClients(data.clients))
       .catch((error) => console.error("Error fetching clients:", error));
-  }, []);
+  };
 
   const handleAddClient = (newClient) => {
     addClient(newClient)
@@ -35,9 +39,9 @@ export function App() {
 
   return (
     <div>
-      <h1>Hat Trick        -        Frontend Instance IP: {FRONTEND_IP}</h1>
+      <h1>Hat Trick - Frontend Instance IP: {FRONTEND_IP}</h1>
       <ClientAddition onSubmit={handleAddClient} />
-      <ClientTable clients={clients} onRefresh={getClients} onUpdate={handleUpdateClient} onDelete={handleDeleteClient} />
+      <ClientTable clients={clients} onRefresh={handleGetClients} onUpdate={handleUpdateClient} onDelete={handleDeleteClient} />
     </div>
   );
 }
