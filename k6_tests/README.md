@@ -9,7 +9,7 @@
 k6 run --vus XX --duration XXs your_script.js
 ```
 
-vus being "vitual users" (parrallels "while true" execution of the script)
+vus being "virtual users" (parallels "while true" execution of the script)
 durations being the duration of the script being executed in seconds
 
 ----------
