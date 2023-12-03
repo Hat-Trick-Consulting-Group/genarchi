@@ -53,13 +53,6 @@ resource "aws_cloudwatch_log_group" "tf-update-client" {
   retention_in_days = 1
 }
 
-data "archive_file" "lambda_tf-update-client" {
-  type = "zip"
-
-  source_dir  = "${path.module}/lambdas/tf-update-client"
-  output_path = "${path.module}/lambdas/tf-update-client.zip"
-}
-
 resource "aws_s3_object" "lambda_tf-update-client" {
   bucket = aws_s3_bucket.lambda_bucket.id
 

@@ -53,13 +53,6 @@ resource "aws_cloudwatch_log_group" "tf-health" {
   retention_in_days = 1
 }
 
-data "archive_file" "lambda_tf-health" {
-  type = "zip"
-
-  source_dir  = "${path.module}/lambdas/tf-health"
-  output_path = "${path.module}/lambdas/tf-health.zip"
-}
-
 resource "aws_s3_object" "lambda_tf-health" {
   bucket = aws_s3_bucket.lambda_bucket.id
 

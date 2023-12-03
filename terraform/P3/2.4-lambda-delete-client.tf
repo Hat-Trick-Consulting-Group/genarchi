@@ -53,13 +53,6 @@ resource "aws_cloudwatch_log_group" "tf-delete-client" {
   retention_in_days = 1
 }
 
-data "archive_file" "lambda_tf-delete-client" {
-  type = "zip"
-
-  source_dir  = "${path.module}/lambdas/tf-delete-client"
-  output_path = "${path.module}/lambdas/tf-delete-client.zip"
-}
-
 resource "aws_s3_object" "lambda_tf-delete-client" {
   bucket = aws_s3_bucket.lambda_bucket.id
 

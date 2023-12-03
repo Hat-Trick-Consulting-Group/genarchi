@@ -53,13 +53,6 @@ resource "aws_cloudwatch_log_group" "tf-add-client" {
   retention_in_days = 1
 }
 
-data "archive_file" "lambda_tf-add-client" {
-  type = "zip"
-
-  source_dir  = "${path.module}/lambdas/tf-add-client"
-  output_path = "${path.module}/lambdas/tf-add-client.zip"
-}
-
 resource "aws_s3_object" "lambda_tf-add-client" {
   bucket = aws_s3_bucket.lambda_bucket.id
 
