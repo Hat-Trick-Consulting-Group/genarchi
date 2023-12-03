@@ -42,8 +42,6 @@ resource "aws_lambda_function" "tf-health" {
   runtime = "nodejs18.x"
   handler = "health.handler"
 
-  source_code_hash = data.archive_file.lambda_tf-health.output_base64sha256
-
   role = aws_iam_role.tf-health_lambda_exec.arn
 }
 
@@ -57,7 +55,7 @@ resource "aws_s3_object" "lambda_tf-health" {
   bucket = aws_s3_bucket.lambda_bucket.id
 
   key    = "tf-health.zip"
-  source = data.archive_file.lambda_tf-health.output_path
+  source = "lambdas/tf-health.zip"
 
-  etag = filemd5(data.archive_file.lambda_tf-health.output_path)
+  etag = filemd5("lambdas/tf-health.zip")
 }

@@ -42,8 +42,6 @@ resource "aws_lambda_function" "tf-update-client" {
   runtime = "nodejs18.x"
   handler = "update-client.handler"
 
-  source_code_hash = data.archive_file.lambda_tf-update-client.output_base64sha256
-
   role = aws_iam_role.tf-update-client_lambda_exec.arn
 }
 
@@ -57,7 +55,7 @@ resource "aws_s3_object" "lambda_tf-update-client" {
   bucket = aws_s3_bucket.lambda_bucket.id
 
   key    = "tf-update-client.zip"
-  source = data.archive_file.lambda_tf-update-client.output_path
+  source = "lambdas/tf-update-client.zip"
 
-  etag = filemd5(data.archive_file.lambda_tf-update-client.output_path)
+  etag = filemd5("lambdas/tf-update-client.zip")
 }

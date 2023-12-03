@@ -42,8 +42,6 @@ resource "aws_lambda_function" "tf-get-clients" {
   runtime = "nodejs18.x"
   handler = "get-clients.handler"
 
-  source_code_hash = data.archive_file.lambda_tf-get-clients.output_base64sha256
-
   role = aws_iam_role.tf-get-clients_lambda_exec.arn
 }
 
@@ -57,7 +55,7 @@ resource "aws_s3_object" "lambda_tf-get-clients" {
   bucket = aws_s3_bucket.lambda_bucket.id
 
   key    = "tf-get-clients.zip"
-  source = data.archive_file.lambda_tf-get-clients.output_path
+  source = "lambdas/tf-get-clients.zip"
 
-  etag = filemd5(data.archive_file.lambda_tf-get-clients.output_path)
+  etag = filemd5("lambdas/tf-get-clients.zip")
 }
