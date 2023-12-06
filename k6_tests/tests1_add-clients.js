@@ -1,17 +1,12 @@
 import http from 'k6/http';
 import { check, sleep } from 'k6';
 
-function getRandomInt(max) {
-  return Math.floor(Math.random() *max);
-}
-
 export default function () {
   // Get url from command execution
   const url = __ENV.URL;
 
   //create a random id JSON object
   const payload = {
-    //"id": getRandomInt(Number.MAX_SAFE_INTEGER),
     "id": 1,
     "name": "John Doe",
     "email": "john@example.com",    
