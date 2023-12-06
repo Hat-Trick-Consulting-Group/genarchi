@@ -16,6 +16,10 @@ A terraform lab can be found in the tutorial folder.
 ---------
 
 ### Basics
+DON'T FORGET TO EXPORT THESE VARIABLES:
+1.  AWS_ACCESS_KEY_ID
+2.  AWS_SECRET_ACCESS_KEY
+
 To start a terraform project:
 - Create a .tf file (ex main.tf) and write your IaC stuff inside
 - Run
