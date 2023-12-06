@@ -42,8 +42,6 @@ resource "aws_lambda_function" "tf-add-client" {
   runtime = "nodejs18.x"
   handler = "add-client.handler"
 
-  source_code_hash = data.archive_file.lambda_tf-add-client.output_base64sha256
-
   role = aws_iam_role.tf-add-client_lambda_exec.arn
 }
 
@@ -53,18 +51,11 @@ resource "aws_cloudwatch_log_group" "tf-add-client" {
   retention_in_days = 1
 }
 
-data "archive_file" "lambda_tf-add-client" {
-  type = "zip"
-
-  source_dir  = "${path.module}/lambdas/tf-add-client"
-  output_path = "${path.module}/lambdas/tf-add-client.zip"
-}
-
 resource "aws_s3_object" "lambda_tf-add-client" {
   bucket = aws_s3_bucket.lambda_bucket.id
 
   key    = "tf-add-client.zip"
-  source = data.archive_file.lambda_tf-add-client.output_path
+  source = "lambdas/tf-add-client.zip"
 
-  etag = filemd5(data.archive_file.lambda_tf-add-client.output_path)
+  etag = filemd5("lambdas/tf-add-client.zip")
 }

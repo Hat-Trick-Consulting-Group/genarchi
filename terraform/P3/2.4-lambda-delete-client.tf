@@ -42,8 +42,6 @@ resource "aws_lambda_function" "tf-delete-client" {
   runtime = "nodejs18.x"
   handler = "delete-client.handler"
 
-  source_code_hash = data.archive_file.lambda_tf-delete-client.output_base64sha256
-
   role = aws_iam_role.tf-delete-client_lambda_exec.arn
 }
 
@@ -53,18 +51,11 @@ resource "aws_cloudwatch_log_group" "tf-delete-client" {
   retention_in_days = 1
 }
 
-data "archive_file" "lambda_tf-delete-client" {
-  type = "zip"
-
-  source_dir  = "${path.module}/lambdas/tf-delete-client"
-  output_path = "${path.module}/lambdas/tf-delete-client.zip"
-}
-
 resource "aws_s3_object" "lambda_tf-delete-client" {
   bucket = aws_s3_bucket.lambda_bucket.id
 
   key    = "tf-delete-client.zip"
-  source = data.archive_file.lambda_tf-delete-client.output_path
+  source = "lambdas/tf-delete-client.zip"
 
-  etag = filemd5(data.archive_file.lambda_tf-delete-client.output_path)
+  etag = filemd5("lambdas/tf-delete-client.zip")
 }
