@@ -3,10 +3,10 @@
 ----------
 ## Tutorials: How to K6
 
-1) write a .js script with your tests
+1) write a .js script with your tests (you can take a look at the exiting one)
 2) run 
 ```
-k6 run --vus XX --duration XXs your_script.js
+k6 run --vus XX --duration XXs -a yourAddress your_script.js --env URL="yourURL"
 ```
 
 vus being "virtual users" (parallels "while true" execution of the script)
