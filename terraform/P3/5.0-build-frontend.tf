@@ -11,7 +11,7 @@ resource "null_resource" "build_frontend" {
   }
 
   provisioner "local-exec" {
-    command = "npm install && npm run build"
+    command = "npm install vite@latest && npm install npm install && npm run build"
     working_dir = "../../frontend/"
   }
 

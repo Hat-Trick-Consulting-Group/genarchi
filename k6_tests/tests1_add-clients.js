@@ -7,7 +7,6 @@ export default function () {
 
   //create a random id JSON object
   const payload = {
-    "id": 1,
     "name": "John Doe",
     "email": "john@example.com",    
   };
