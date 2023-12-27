@@ -11,6 +11,9 @@ k6 run --vus XX --duration XXs your_script.js --env URL="yourURL"
 ```
 Replace XX by positives integers, your_script.js by the script that you want to use and yourURL with the backend-api url (keep the quotes)
 
+BE CARREFUL:
+For P2 you have to add http:// AND the port :8080 to the given address !!!
+
 vus being "virtual users" (parallels "while true" execution of the script)
 durations being the duration of the script being executed in seconds
 
@@ -18,3 +21,11 @@ durations being the duration of the script being executed in seconds
 ## Official Documentation
 Installation: https://k6.io/docs/get-started/installation/
 How to run: https://k6.io/docs/get-started/running-k6/
+
+----------
+
+## Ideal Tests (to see asg in action for backend)
+Using P2
+```
+k6 run --vus 5 --duration 200s health_test.js --env URL="url:8080"
+```

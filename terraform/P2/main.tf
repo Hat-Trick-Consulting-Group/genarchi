@@ -93,9 +93,9 @@ module "alb_asg" {
   instance_type              = "t2.micro"
   private_subnet_ids         = module.vpc.private_subnet_ids
   public_subnet_ids          = module.vpc.public_subnet_ids
-  min_instance               = 3
-  desired_instance           = 3
-  max_instance               = 6
+  min_instance               = 2
+  desired_instance           = 2
+  max_instance               = 3 //6
   ami                        = "ami-0a4b7ff081ca1ded9"
   ssh_key_name               = "hat_trick_ssh_key"
   vpc_id                     = module.vpc.vpc_id
@@ -117,7 +117,7 @@ module "alb_asg" {
 module "cloudwatch_cpu_alarm" {
   source                = "./modules/cloudwatch"
   min_cpu_percent_alarm = 5  #5
-  max_cpu_percent_alarm = 80 #80
+  max_cpu_percent_alarm = 10 #80 by default
   asg_name              = [module.alb_asg.asg_name_frontend, module.alb_asg.asg_name_backend]
 }
 
@@ -127,6 +127,6 @@ resource "null_resource" "print_alb_dns_name" {
   }
 
   provisioner "local-exec" {
-    command = "echo 'ALB DNS Name: ${module.alb_asg.alb_dns_name}'"
+    command = "echo 'ALB DNS Name: http://${module.alb_asg.alb_dns_name}'"
   }
 }

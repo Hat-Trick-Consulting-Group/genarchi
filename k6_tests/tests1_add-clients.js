@@ -19,7 +19,7 @@ export default function () {
 
   //Post request
   let res = http.post(url + '/add-client', JSON.stringify(payload), params);
-  
+  console.log(res.status, res.body);
   //Check response
   check(res, {
     'status is 201': (r) => r.status === 201,
