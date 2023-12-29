@@ -127,6 +127,10 @@ resource "null_resource" "print_alb_dns_name" {
   }
 
   provisioner "local-exec" {
-    command = "echo 'ALB DNS Name: http://${module.alb_asg.alb_dns_name}'"
+    command = <<-EOT
+      echo -e "\e[0;32m ################# ALB DNS Name ################# \e[0m"
+      echo -e "\e[0;32m http://${module.alb_asg.alb_dns_name} \e[0m"
+      echo -e "\e[0;32m ################################################ \e[0m"
+    EOT
   }
 }
