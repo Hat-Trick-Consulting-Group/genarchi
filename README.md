@@ -1,21 +1,22 @@
 # Start
 
-To use terraform
+Select one of the given architecture and follow the instruction given:
 
-1. Export AWS_ACCESS_KEY_ID
-2. Export AWS_SECRET_ACCESS_KEY
-3. P2
-
+P2:
 ```
 cd terraform/P2
 ```
+Follow the documentation given [here](terraform/P2/README.md).
 
-4. P3
-
+P3:
 ```
 cd terraform/P3
 ```
+Follow the documentation given [here](terraform/P3/README.md).
 
+--------------------------
+
+# DEVS DOCUMENTATION
 ## For developpement purpose
 
 ```

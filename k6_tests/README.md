@@ -1,5 +1,6 @@
 # K6
 
+K6 is our test tool to check for our scalling capacities.
 ----------
 ## Tutorials: How to K6
 1) terraform apply the architecture that you want to test and get the backend api address (P3 Example):

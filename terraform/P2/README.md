@@ -13,7 +13,7 @@ Terraform CLI 1.2.0+ installed
 AWS CLI intalled
 AWS Accound and credentials
 
-Authenticate the Terraform AWS provider with
+Authenticate the Terraform AWS provider with:
 ```
 export AWS_ACCESS_KEY_ID=
 ```
@@ -24,21 +24,21 @@ export AWS_SECRET_ACCESS_KEY=
 ```
 
 ## Run the project
-Run:
+Run from P2 folder:
 ```
 terraform init
 terraform apply
 ```
 
-You may find the URL of the ALB DNS when terraform applied changes:
+You may find the app URL when terraform applied changes:
 
-![Alt text](image.png)
+![Alt text](image_doc/P2_DNS.png)
 
 ## Usage
 
-Enter the ALB DNS url in your web browser to use the application:
+Enter the app DNS url in your web browser to use the application:
 
-![Alt text](image-1.png)
+![Alt text](image_doc/app.png)
 
 You can:
 - add clients

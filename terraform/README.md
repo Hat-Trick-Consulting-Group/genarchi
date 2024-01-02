@@ -1,6 +1,18 @@
 # Terraform
 
+## Plateform 2
+
+Everything related to the plateform 2 deployment is in the P2 folder [here](P2/README.md).
+
+---------
+
+## Plateform 3
+
+Everything related to the plateform 3 deployment is in the P3 folder [here](P3/README.md).
+
 ----------
+
+# DOC FOR DEVS
 ## Tutorials
 
 Tutorials can be found at these adresses:
@@ -85,16 +97,3 @@ To use these variables within modules, you should create a `variables.tf` file (
 
 ---------
 
-## Plateform 2
-
-Everything related to the plateform 2 deployment is in the P2 folder.
-
-TODO
-
----------
-
-## Plateform 3
-
-Everything related to the plateform 3 deployment is in the P3 folder.
-
-TODO
