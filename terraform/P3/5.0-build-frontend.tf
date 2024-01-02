@@ -30,7 +30,13 @@ resource "null_resource" "build_frontend" {
   }
 
   provisioner "local-exec" {
-    command = "npm install vite@latest && npm install npm install && npm run build"
+    command = <<-EOT
+      if (-not $env:Path.Contains('C:\\Program Files\\nodejs')) {
+        $env:Path += ';C:\\Program Files\\nodejs'
+      }
+      & 'C:\\Program Files\\nodejs\\npm.cmd' install ; & 'C:\\Program Files\\nodejs\\npm.cmd' install vite@latest ; & 'C:\\Program Files\\nodejs\\npm.cmd' run build
+    EOT
     working_dir = "../../frontend/"
+    interpreter = ["PowerShell", "-Command"]
   }
 }
