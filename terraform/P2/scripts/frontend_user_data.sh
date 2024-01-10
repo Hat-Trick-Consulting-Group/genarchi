@@ -5,11 +5,16 @@ sudo yum update -y
 sudo yum install -y docker git
 
 # Install Node.js and npm
-sudo yum install https://rpm.nodesource.com/pub_21.x/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm -y
-sudo yum install nodejs -y --setopt=nodesource-nodejs.module_hotfixes=1
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+. ~/.nvm/nvm.sh
+nvm install --lts
 
 # Clone your Git repository
 git clone https://github.com/Hat-Trick-Consulting-Group/genarchi.git
+
+sudo chown -R $(whoami) /genarchi/frontend
 
 # Change directory to the cloned repository
 cd genarchi
@@ -27,5 +32,5 @@ npm install
 npm run build
 
 # Serve the production build on port 80 using 'serve'
-sudo npm install -g serve
-sudo serve -s dist -l 80 --no-port-switching --cors &
+npm install -g serve
+serve -s dist -l 80 --no-port-switching --cors &
